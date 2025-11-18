@@ -9,14 +9,9 @@ export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Debug: zobraz co je v user
-  console.log('📄 LoginPage - user:', user);
-
   // Redirect po přihlášení
   useEffect(() => {
-    console.log('📄 LoginPage useEffect - user:', user);
     if (user) {
-      console.log('✅ User je přítomný, redirectuji na /dashboard');
       navigate('/dashboard');
     }
   }, [user, navigate]);

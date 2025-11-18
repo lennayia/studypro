@@ -18,14 +18,10 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Debug: zkontroluj jestli je dev mode aktivní
-  console.log('🔧 DEV MODE:', DEV_MODE);
-
   // Načtení aktuálního uživatele při startu
   useEffect(() => {
     // Dev mode: použij fake user a přeskoč autentizaci
     if (DEV_MODE) {
-      console.log('✅ Dev mode aktivní - používám fake user');
       setUser(FAKE_USER);
       setProfile(FAKE_PROFILE);
       setLoading(false);
@@ -68,11 +64,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const createFallbackProfile = (userId) => ({
+    id: userId,
+    email: 'loading...',
+    full_name: 'User',
+    total_points: 0,
+    current_level: 1,
+    study_streak: 0,
+  });
+
   const loadUserProfile = async (userId) => {
     try {
-      console.log('Loading profile for user:', userId);
-
-      // Timeout pro databázový dotaz (2 sekundy)
       const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Database timeout')), 2000)
       );
@@ -83,40 +85,13 @@ export const AuthProvider = ({ children }) => {
         .eq('id', userId)
         .single();
 
-      const { data, error } = await Promise.race([queryPromise, timeoutPromise])
-        .catch(err => {
-          console.warn('Database query failed or timed out:', err);
-          return { data: null, error: err };
-        });
+      const { data } = await Promise.race([queryPromise, timeoutPromise])
+        .catch(() => ({ data: null }));
 
-      console.log('Profile query result:', { data, error });
-
-      if (data) {
-        // Máme data z databáze - použijeme je
-        setProfile(data);
-      } else {
-        // Chyba nebo timeout - použijeme základní profil bez dalších dotazů
-        console.log('Using fallback profile');
-        setProfile({
-          id: userId,
-          email: 'loading...',
-          full_name: 'User',
-          total_points: 0,
-          current_level: 1,
-          study_streak: 0,
-        });
-      }
+      setProfile(data || createFallbackProfile(userId));
     } catch (error) {
       console.error('Error loading profile:', error);
-      // Vytvoříme základní profil aby aplikace fungovala
-      setProfile({
-        id: userId,
-        email: 'user@example.com',
-        full_name: 'User',
-        total_points: 0,
-        current_level: 1,
-        study_streak: 0,
-      });
+      setProfile(createFallbackProfile(userId));
     }
   };
 
