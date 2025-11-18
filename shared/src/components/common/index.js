@@ -8,3 +8,4 @@ export { default as AppTooltip } from './AppTooltip.jsx';
 export { default as PhotoUpload } from './PhotoUpload.jsx';
 export { StatsCard } from './StatsCard.jsx';
 export { EmptyState } from './EmptyState.jsx';
+export { Icon } from './Icon.jsx';

@@ -1,6 +1,14 @@
 import { Box, Button, Typography, Container, Paper, Alert } from '@mui/material';
-import { LogIn, BookOpen, BarChart, Target, Flame, Clock, GraduationCap } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import {
+  LogoIcon,
+  CoursesFeatureIcon,
+  StatsFeatureIcon,
+  GoalsFeatureIcon,
+  StreakFeatureIcon,
+  DeadlineFeatureIcon,
+  LoginButtonIcon,
+} from '../../shared/src/components/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -49,7 +57,7 @@ export const LoginPage = () => {
         >
           {/* Logo & Title */}
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 1 }}>
-            <GraduationCap size={48} color="#6366f1" />
+            <LogoIcon />
             <Typography
               variant="h2"
               sx={{
@@ -70,31 +78,31 @@ export const LoginPage = () => {
           {/* Features */}
           <Box sx={{ mb: 4, textAlign: 'left' }}>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <BookOpen size={20} color="#6366f1" />
+              <CoursesFeatureIcon />
               <Typography variant="body1">
                 Sleduj všechny své kurzy na jednom místě
               </Typography>
             </Box>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <BarChart size={20} color="#8b5cf6" />
+              <StatsFeatureIcon />
               <Typography variant="body1">
                 Vizualizuj svůj pokrok v reálném čase
               </Typography>
             </Box>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <Target size={20} color="#ec4899" />
+              <GoalsFeatureIcon />
               <Typography variant="body1">
                 Stanovuj si cíle a dosahuj jich
               </Typography>
             </Box>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <Flame size={20} color="#f97316" />
+              <StreakFeatureIcon />
               <Typography variant="body1">
                 Sbírej body, odznaky a buduj streak
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <Clock size={20} color="#10b981" />
+              <DeadlineFeatureIcon />
               <Typography variant="body1">
                 Nezmeškej žádný deadline
               </Typography>
@@ -113,7 +121,7 @@ export const LoginPage = () => {
             fullWidth
             size="large"
             variant="contained"
-            startIcon={<LogIn size={24} />}
+            startIcon={<LoginButtonIcon />}
             onClick={handleGoogleSignIn}
             disabled={loading}
             sx={{
