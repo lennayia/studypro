@@ -53,8 +53,13 @@ cp .env.example .env
 
 ```env
 VITE_SUPABASE_URL=https://xxxxx.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+VITE_SUPABASE_ANON_KEY=your_anon_key_here
 ```
+
+**⚠️ DŮLEŽITÉ:**
+- `.env` soubor je v `.gitignore` a **NESMÍ být nikdy commitnutý do gitu**
+- Anon key je veřejný klíč, ale i tak je dobré ho nesdílet zbytečně
+- Service role key NIKDY nesdílet a nedávat do frontendu!
 
 ### 6️⃣ Spuštění SQL migrací
 
