@@ -20,7 +20,7 @@ import {
   Badge,
   Chip,
 } from '@mui/material';
-import { Menu, Home, BookOpen, Trophy, BarChart, Settings, LogOut, Flame, Star } from 'lucide-react';
+import { Menu as MenuIcon, Home, BookOpen, Trophy, BarChart, Settings, LogOut, Flame, Star } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getStreakEmoji, getLevelFromPoints } from '../../utils/helpers';
@@ -203,7 +203,7 @@ export const Layout = ({ children }) => {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { md: 'none' }, color: 'text.primary' }}
           >
-            <Menu size={24} />
+            <MenuIcon size={24} />
           </IconButton>
 
           <Typography
