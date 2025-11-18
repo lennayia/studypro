@@ -1,5 +1,5 @@
 import { Box, Typography, Grid, Card, CardContent, Chip, LinearProgress } from '@mui/material';
-import { Star } from 'lucide-react';
+import { Star, Trophy, Award, Target } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
 import { LoadingSpinner } from '../../shared/src/components/common';
@@ -17,9 +17,12 @@ export const GoalsPage = () => {
   return (
     <Box>
       {/* Header */}
-      <Typography variant="h4" sx={{ fontWeight: 700, mb: 4 }}>
-        🏆 Cíle & Úspěchy
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 4 }}>
+        <Trophy size={28} color="#eab308" />
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+          Cíle & Úspěchy
+        </Typography>
+      </Box>
 
       {/* Level Card */}
       <Card sx={{ mb: 4, background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)', color: 'white' }}>
@@ -61,9 +64,12 @@ export const GoalsPage = () => {
 
       {/* Achievements */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
-          🎖️ Odznaky ({userAchievements.length}/{achievements.length})
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+          <Award size={22} color="#8b5cf6" />
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            Odznaky ({userAchievements.length}/{achievements.length})
+          </Typography>
+        </Box>
 
         <Grid container spacing={2}>
           {achievements.map((achievement) => {
@@ -123,9 +129,12 @@ export const GoalsPage = () => {
 
       {/* Goals */}
       <Box>
-        <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
-          🎯 Moje cíle
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+          <Target size={22} color="#ec4899" />
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            Moje cíle
+          </Typography>
+        </Box>
 
         {goals.length > 0 ? (
           <Grid container spacing={2}>

@@ -1,6 +1,6 @@
 import { Grid, Box, Typography, Card, CardContent, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { GraduationCap, CheckCircle, TrendingUp, Percent, Plus } from 'lucide-react';
+import { GraduationCap, CheckCircle, TrendingUp, Percent, Plus, BarChart, Flame, Zap, BookOpen, Target, Settings } from 'lucide-react';
 import { useCourses } from '../contexts/CourseContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
@@ -110,7 +110,12 @@ export const DashboardPage = () => {
 
         <Grid item xs={12} md={8}>
           <ProgressChart
-            title="📊 Tvoje studijní aktivita (poslední týden)"
+            title={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <BarChart size={20} />
+                Tvoje studijní aktivita (poslední týden)
+              </Box>
+            }
             data={last7Days}
             type="area"
             dataKey="value"
@@ -121,9 +126,12 @@ export const DashboardPage = () => {
       {/* Active Courses */}
       <Box sx={{ mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            🔥 Aktivní kurzy
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Flame size={24} color="#f97316" />
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+              Aktivní kurzy
+            </Typography>
+          </Box>
           <Button
             variant="contained"
             startIcon={<Plus size={20} />}
@@ -148,7 +156,7 @@ export const DashboardPage = () => {
           <Card>
             <CardContent>
               <EmptyState
-                icon="📚"
+                icon={<BookOpen size={64} color="#6366f1" />}
                 title="Žádné aktivní kurzy"
                 description="Začni studovat! Přidej svůj první kurz a rozjeď svou studijní kariéru."
                 actionLabel="Přidat kurz"
@@ -162,48 +170,55 @@ export const DashboardPage = () => {
       {/* Quick Actions */}
       <Card>
         <CardContent>
-          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-            ⚡ Rychlé akce
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+            <Zap size={22} color="#eab308" />
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Rychlé akce
+            </Typography>
+          </Box>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
               <Button
                 fullWidth
                 variant="outlined"
+                startIcon={<BookOpen size={18} />}
                 onClick={() => navigate('/courses')}
                 sx={{ py: 2 }}
               >
-                📚 Všechny kurzy
+                Všechny kurzy
               </Button>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Button
                 fullWidth
                 variant="outlined"
+                startIcon={<Target size={18} />}
                 onClick={() => navigate('/goals')}
                 sx={{ py: 2 }}
               >
-                🎯 Moje cíle
+                Moje cíle
               </Button>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Button
                 fullWidth
                 variant="outlined"
+                startIcon={<BarChart size={18} />}
                 onClick={() => navigate('/stats')}
                 sx={{ py: 2 }}
               >
-                📊 Statistiky
+                Statistiky
               </Button>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Button
                 fullWidth
                 variant="outlined"
+                startIcon={<Settings size={18} />}
                 onClick={() => navigate('/settings')}
                 sx={{ py: 2 }}
               >
-                ⚙️ Nastavení
+                Nastavení
               </Button>
             </Grid>
           </Grid>

@@ -10,7 +10,7 @@ import {
   MenuItem,
   ListItemIcon,
 } from '@mui/material';
-import { MoreVertical, Edit, Trash2, Play, Calendar } from 'lucide-react';
+import { MoreVertical, Edit, Trash2, Play, Calendar, User, DollarSign } from 'lucide-react';
 import { useState } from 'react';
 import {
   getCourseTypeLabel,
@@ -151,9 +151,12 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
           </Box>
 
           {course.instructor && (
-            <Typography variant="caption" color="text.secondary">
-              👨‍🏫 {course.instructor}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <User size={14} />
+              <Typography variant="caption" color="text.secondary">
+                {course.instructor}
+              </Typography>
+            </Box>
           )}
         </Box>
 
@@ -198,9 +201,12 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
 
         {/* Price */}
         {course.price && (
-          <Typography variant="caption" color="text.secondary">
-            💰 {formatPrice(course.price, course.currency)}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <DollarSign size={14} />
+            <Typography variant="caption" color="text.secondary">
+              {formatPrice(course.price, course.currency)}
+            </Typography>
+          </Box>
         )}
 
         {/* Play Button */}

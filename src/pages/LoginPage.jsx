@@ -1,5 +1,5 @@
 import { Box, Button, Typography, Container, Paper, Alert } from '@mui/material';
-import { LogIn } from 'lucide-react';
+import { LogIn, BookOpen, BarChart, Target, Flame, Clock, GraduationCap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -48,18 +48,20 @@ export const LoginPage = () => {
           }}
         >
           {/* Logo & Title */}
-          <Typography
-            variant="h2"
-            sx={{
-              fontWeight: 700,
-              mb: 1,
-              background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            🎓 StudyPro
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 1 }}>
+            <GraduationCap size={48} color="#6366f1" />
+            <Typography
+              variant="h2"
+              sx={{
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              StudyPro
+            </Typography>
+          </Box>
 
           <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
             Tvůj osobní studijní parťák
@@ -67,29 +69,34 @@ export const LoginPage = () => {
 
           {/* Features */}
           <Box sx={{ mb: 4, textAlign: 'left' }}>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <BookOpen size={20} color="#6366f1" />
               <Typography variant="body1">
-                📚 Sleduj všechny své kurzy na jednom místě
+                Sleduj všechny své kurzy na jednom místě
               </Typography>
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <BarChart size={20} color="#8b5cf6" />
               <Typography variant="body1">
-                📊 Vizualizuj svůj pokrok v reálném čase
+                Vizualizuj svůj pokrok v reálném čase
               </Typography>
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Target size={20} color="#ec4899" />
               <Typography variant="body1">
-                🎯 Stanovuj si cíle a dosahuj jich
+                Stanovuj si cíle a dosahuj jich
               </Typography>
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Flame size={20} color="#f97316" />
               <Typography variant="body1">
-                🔥 Sbírej body, odznaky a buduj streak
+                Sbírej body, odznaky a buduj streak
               </Typography>
             </Box>
-            <Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Clock size={20} color="#10b981" />
               <Typography variant="body1">
-                ⏰ Nezmeškej žádný deadline
+                Nezmeškej žádný deadline
               </Typography>
             </Box>
           </Box>

@@ -20,7 +20,7 @@ import {
   Badge,
   Chip,
 } from '@mui/material';
-import { Menu as MenuIcon, Home, BookOpen, Trophy, BarChart, Settings, LogOut, Flame, Star } from 'lucide-react';
+import { Menu as MenuIcon, Home, BookOpen, Trophy, BarChart, Settings, LogOut, Flame, Star, GraduationCap } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getStreakEmoji, getLevelFromPoints } from '../../utils/helpers';
@@ -65,18 +65,20 @@ export const Layout = ({ children }) => {
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Logo & Brand */}
       <Box sx={{ p: 3, textAlign: 'center' }}>
-        <Typography
-          variant="h5"
-          sx={{
-            fontWeight: 700,
-            background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            mb: 0.5,
-          }}
-        >
-          🎓 StudyPro
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 0.5 }}>
+          <GraduationCap size={28} color="#6366f1" />
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            StudyPro
+          </Typography>
+        </Box>
         <Typography variant="caption" color="text.secondary">
           Tvůj studijní parťák
         </Typography>

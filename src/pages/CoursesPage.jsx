@@ -9,7 +9,7 @@ import {
   InputAdornment,
   Fab,
 } from '@mui/material';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, BookOpen, GraduationCap } from 'lucide-react';
 import { useCourses } from '../contexts/CourseContext';
 import { CourseCard } from '../components/courses/CourseCard';
 import { CourseForm } from '../components/courses/CourseForm';
@@ -74,9 +74,12 @@ export const CoursesPage = () => {
       {/* Header */}
       <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-            📚 Moje kurzy
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+            <BookOpen size={28} color="#6366f1" />
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              Moje kurzy
+            </Typography>
+          </Box>
           <Typography variant="body1" color="text.secondary">
             Celkem {courses.length} {courses.length === 1 ? 'kurz' : courses.length < 5 ? 'kurzy' : 'kurzů'}
           </Typography>
@@ -195,7 +198,7 @@ export const CoursesPage = () => {
         </Grid>
       ) : courses.length === 0 ? (
         <EmptyState
-          icon="🎓"
+          icon={<GraduationCap size={64} color="#6366f1" />}
           title="Zatím žádné kurzy"
           description="Přidej svůj první kurz a začni sledovat svůj studijní pokrok!"
           actionLabel="Přidat první kurz"
@@ -203,7 +206,7 @@ export const CoursesPage = () => {
         />
       ) : (
         <EmptyState
-          icon="🔍"
+          icon={<Search size={64} color="#8b5cf6" />}
           title="Žádné kurzy nenalezeny"
           description="Zkus upravit filtry nebo hledání"
         />
