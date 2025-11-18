@@ -17,8 +17,34 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Dev mode - skip authentication
+  const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
+
   // Načtení aktuálního uživatele při startu
   useEffect(() => {
+    // Dev mode: použij fake user a přeskoč autentizaci
+    if (isDevMode) {
+      const fakeUser = {
+        id: 'dev-user-123',
+        email: 'dev@studypro.test',
+        user_metadata: {
+          full_name: 'Dev User',
+          avatar_url: null,
+        },
+      };
+      const fakeProfile = {
+        id: 'dev-user-123',
+        email: 'dev@studypro.test',
+        full_name: 'Dev User',
+        created_at: new Date().toISOString(),
+      };
+      setUser(fakeUser);
+      setProfile(fakeProfile);
+      setLoading(false);
+      return;
+    }
+
+    // Production mode: normální autentizace
     checkUser();
 
     // Listener pro změny auth stavu
@@ -36,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     return () => {
       authListener?.subscription?.unsubscribe();
     };
-  }, []);
+  }, [isDevMode]);
 
   const checkUser = async () => {
     try {
