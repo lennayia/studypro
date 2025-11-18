@@ -11,6 +11,7 @@ import { NotificationProvider } from '../shared/src/context/NotificationContext'
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { CoursesPage } from './pages/CoursesPage';
+import { CourseDetailPage } from './pages/CourseDetailPage';
 import { GoalsPage } from './pages/GoalsPage';
 import { StatsPage } from './pages/StatsPage';
 import { SettingsPage } from './pages/SettingsPage';
@@ -54,6 +55,16 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <Layout>
               <CoursesPage />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/courses/:id"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <CourseDetailPage />
             </Layout>
           </ProtectedRoute>
         }
