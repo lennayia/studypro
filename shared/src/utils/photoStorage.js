@@ -206,3 +206,16 @@ export const PHOTO_BUCKETS = {
   MATERIAL_IMAGES: 'material-images',
   PROGRAM_IMAGES: 'program-images',
 };
+
+/**
+ * Placeholder exports for direct import compatibility
+ * These should NOT be used directly - use createPhotoStorage() factory instead
+ * Only here to prevent build errors when scanning dependencies
+ */
+export const uploadPhoto = () => {
+  throw new Error('PhotoStorage: Use createPhotoStorage(supabaseClient) factory function instead of direct import');
+};
+
+export const deletePhoto = () => {
+  throw new Error('PhotoStorage: Use createPhotoStorage(supabaseClient) factory function instead of direct import');
+};
