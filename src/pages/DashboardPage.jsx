@@ -10,12 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { useCourses } from '../contexts/CourseContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
-import { StatsCard } from '../components/dashboard/StatsCard';
+import { LoadingSpinner, StatsCard, EmptyState } from '../../shared/src/components/common';
 import { StreakDisplay } from '../components/dashboard/StreakDisplay';
 import { ProgressChart } from '../components/dashboard/ProgressChart';
 import { CourseCard } from '../components/courses/CourseCard';
-import { LoadingSpinner } from '../../shared/src/components/common';
-import { EmptyState } from '../components/common/EmptyState';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
