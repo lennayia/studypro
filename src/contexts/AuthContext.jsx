@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
+import { DEV_MODE, FAKE_USER, FAKE_PROFILE } from '../config/devMode';
 
 const AuthContext = createContext({});
 
@@ -17,33 +18,16 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Dev mode - skip authentication
-  const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
-
   // Debug: zkontroluj jestli je dev mode aktivní
-  console.log('🔧 DEV MODE:', isDevMode, 'Raw value:', import.meta.env.VITE_DEV_MODE);
+  console.log('🔧 DEV MODE:', DEV_MODE);
 
   // Načtení aktuálního uživatele při startu
   useEffect(() => {
     // Dev mode: použij fake user a přeskoč autentizaci
-    if (isDevMode) {
+    if (DEV_MODE) {
       console.log('✅ Dev mode aktivní - používám fake user');
-      const fakeUser = {
-        id: 'dev-user-123',
-        email: 'dev@studypro.test',
-        user_metadata: {
-          full_name: 'Dev User',
-          avatar_url: null,
-        },
-      };
-      const fakeProfile = {
-        id: 'dev-user-123',
-        email: 'dev@studypro.test',
-        full_name: 'Dev User',
-        created_at: new Date().toISOString(),
-      };
-      setUser(fakeUser);
-      setProfile(fakeProfile);
+      setUser(FAKE_USER);
+      setProfile(FAKE_PROFILE);
       setLoading(false);
       return;
     }
@@ -66,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     return () => {
       authListener?.subscription?.unsubscribe();
     };
-  }, [isDevMode]);
+  }, []);
 
   const checkUser = async () => {
     try {
