@@ -315,27 +315,27 @@ CREATE OR REPLACE FUNCTION update_user_streak()
 RETURNS TRIGGER AS $$
 DECLARE
   last_date DATE;
-  current_date DATE;
+  curr_date DATE;
 BEGIN
-  current_date := NEW.session_date;
+  curr_date := NEW.session_date;
 
   SELECT last_activity_date INTO last_date
   FROM studypro_users
   WHERE id = NEW.user_id;
 
-  IF last_date IS NULL OR last_date < current_date THEN
+  IF last_date IS NULL OR last_date < curr_date THEN
     UPDATE studypro_users
     SET
-      last_activity_date = current_date,
+      last_activity_date = curr_date,
       current_streak = CASE
-        WHEN last_date = current_date - 1 THEN current_streak + 1
-        WHEN last_date < current_date - 1 THEN 1
+        WHEN last_date = curr_date - 1 THEN current_streak + 1
+        WHEN last_date < curr_date - 1 THEN 1
         ELSE current_streak
       END,
       longest_streak = GREATEST(longest_streak,
         CASE
-          WHEN last_date = current_date - 1 THEN current_streak + 1
-          WHEN last_date < current_date - 1 THEN 1
+          WHEN last_date = curr_date - 1 THEN current_streak + 1
+          WHEN last_date < curr_date - 1 THEN 1
           ELSE current_streak
         END
       ),
