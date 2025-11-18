@@ -16,12 +16,23 @@ ALTER TABLE IF EXISTS public.studypro_materials SET SCHEMA studypro;
 
 -- 3. Update RLS policies (they move automatically with tables)
 
--- 4. Grant permissions to authenticated users
-GRANT USAGE ON SCHEMA studypro TO authenticated;
-GRANT ALL ON ALL TABLES IN SCHEMA studypro TO authenticated;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA studypro TO authenticated;
+-- 4. Grant permissions to both anon and authenticated users
+GRANT USAGE ON SCHEMA studypro TO anon, authenticated;
+GRANT ALL ON ALL TABLES IN SCHEMA studypro TO anon, authenticated;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA studypro TO anon, authenticated;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA studypro TO anon, authenticated;
 
--- 5. Verify tables were moved
+-- 5. Set default privileges for future objects
+ALTER DEFAULT PRIVILEGES IN SCHEMA studypro
+GRANT ALL ON TABLES TO anon, authenticated;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA studypro
+GRANT ALL ON SEQUENCES TO anon, authenticated;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA studypro
+GRANT ALL ON FUNCTIONS TO anon, authenticated;
+
+-- 6. Verify tables were moved
 SELECT 
   schemaname, 
   tablename 
