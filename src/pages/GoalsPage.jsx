@@ -2,14 +2,14 @@ import { Box, Typography, Grid, Card, CardContent, Chip, LinearProgress } from '
 import { EmojiEvents as TrophyIcon, Stars as StarsIcon } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
-import { Loading } from '../components/common/Loading';
+import { LoadingSpinner } from '../../shared/src/components/common';
 import { getLevelFromPoints, getStreakEmoji } from '../utils/helpers';
 
 export const GoalsPage = () => {
   const { profile } = useAuth();
   const { achievements, userAchievements, goals, loading } = useGamification();
 
-  if (loading) return <Loading message="Načítám úspěchy..." />;
+  if (loading) return <LoadingSpinner size={60} message="Načítám úspěchy..." />;
 
   const level = getLevelFromPoints(profile?.total_points || 0);
   const unlockedAchievementIds = new Set(userAchievements.map((ua) => ua.achievement_id));

@@ -14,7 +14,7 @@ import { StatsCard } from '../components/dashboard/StatsCard';
 import { StreakDisplay } from '../components/dashboard/StreakDisplay';
 import { ProgressChart } from '../components/dashboard/ProgressChart';
 import { CourseCard } from '../components/courses/CourseCard';
-import { Loading } from '../components/common/Loading';
+import { LoadingSpinner } from '../../shared/src/components/common';
 import { EmptyState } from '../components/common/EmptyState';
 
 export const DashboardPage = () => {
@@ -23,7 +23,7 @@ export const DashboardPage = () => {
   const { courses, loading } = useCourses();
   const { studySessions } = useGamification();
 
-  if (loading) return <Loading message="Načítám tvůj dashboard..." />;
+  if (loading) return <LoadingSpinner size={60} message="Načítám tvůj dashboard..." />;
 
   // Statistiky
   const totalCourses = courses.length;

@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
 import { useAuth } from './AuthContext';
 import { calculatePoints } from '../utils/helpers';
+import useSoundFeedback from '../../shared/src/hooks/useSoundFeedback';
 
 const GamificationContext = createContext({});
 
@@ -20,6 +21,12 @@ export const GamificationProvider = ({ children }) => {
   const [goals, setGoals] = useState([]);
   const [studySessions, setStudySessions] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // 🔊 Sound feedback pro gamifikaci!
+  const { playClick, playSuccess, playError, playAchievement } = useSoundFeedback({
+    volume: 0.3,
+    enabled: true,
+  });
 
   useEffect(() => {
     if (user) {
@@ -93,6 +100,11 @@ export const GamificationProvider = ({ children }) => {
         total_points: (profile?.total_points || 0) + points,
       });
 
+      // ✨ Zvuk pro získání bodů
+      if (points > 50) {
+        playSuccess();
+      }
+
       return points;
     } catch (error) {
       console.error('Error adding points:', error);
@@ -131,6 +143,9 @@ export const GamificationProvider = ({ children }) => {
       if (error) throw error;
 
       setUserAchievements((prev) => [...prev, data]);
+
+      // 🎉 Zvuk pro achievement!
+      playAchievement();
 
       // Přidat body
       await addPoints('achievement', achievement.points / 10);
@@ -301,6 +316,11 @@ export const GamificationProvider = ({ children }) => {
     updateGoal,
     deleteGoal,
     loadGamificationData,
+    // 🔊 Export sound feedback hooks
+    playClick,
+    playSuccess,
+    playError,
+    playAchievement,
   };
 
   return <GamificationContext.Provider value={value}>{children}</GamificationContext.Provider>;

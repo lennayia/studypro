@@ -13,7 +13,7 @@ import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { useCourses } from '../contexts/CourseContext';
 import { CourseCard } from '../components/courses/CourseCard';
 import { CourseForm } from '../components/courses/CourseForm';
-import { Loading } from '../components/common/Loading';
+import { LoadingSpinner } from '../../shared/src/components/common';
 import { EmptyState } from '../components/common/EmptyState';
 import { useNavigate } from 'react-router-dom';
 import { filterCourses, sortCourses } from '../utils/helpers';
@@ -63,7 +63,7 @@ export const CoursesPage = () => {
     setEditingCourse(null);
   };
 
-  if (loading) return <Loading message="Načítám kurzy..." />;
+  if (loading) return <LoadingSpinner size={60} message="Načítám kurzy..." />;
 
   // Filtrování a řazení
   const filteredCourses = sortCourses(filterCourses(courses, filters), sortBy);

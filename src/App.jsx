@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, Box } from '@mui/material';
 import { theme } from './theme/theme';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CourseProvider } from './contexts/CourseContext';
 import { GamificationProvider } from './contexts/GamificationContext';
 import { Layout } from './components/common/Layout';
-import { Loading } from './components/common/Loading';
+import { LoadingSpinner, ErrorBoundary } from '../shared/src/components/common';
+import { NotificationProvider } from '../shared/src/context/NotificationContext';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { CoursesPage } from './pages/CoursesPage';
@@ -19,7 +20,11 @@ const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <Loading message="Načítání..." />;
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <LoadingSpinner size={60} message="Načítání..." />
+      </Box>
+    );
   }
 
   if (!user) {
@@ -91,18 +96,22 @@ const AppRoutes = () => {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <AuthProvider>
-          <CourseProvider>
-            <GamificationProvider>
-              <AppRoutes />
-            </GamificationProvider>
-          </CourseProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <NotificationProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <CourseProvider>
+                <GamificationProvider>
+                  <AppRoutes />
+                </GamificationProvider>
+              </CourseProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </NotificationProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
