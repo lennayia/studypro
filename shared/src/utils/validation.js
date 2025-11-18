@@ -1,101 +1,24 @@
 /**
- * Validation & Formatting Utilities
- *
- * Email, phone, and social media validation/formatting
- *
- * @created 11.11.2025 - Session #15
+ * Validation utilities
+ * Univerzální validační funkce použitelné napříč všemi moduly
  */
 
 /**
- * Validate email format
- * @param {string} email
- * @returns {boolean}
+ * Validace emailové adresy
+ * @param {string} email - Email k validaci
+ * @returns {boolean} - True pokud je email validní
  */
-export const isValidEmail = (email) => {
-  if (!email) return true; // Optional field
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+export const validateEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
 };
 
 /**
- * Validate Czech phone number
- * Accepts: +420, 00420, or 9 digits (flexible - allows any digit count)
- * @param {string} phone
- * @returns {boolean}
+ * Validace URL
+ * @param {string} url - URL k validaci
+ * @returns {boolean} - True pokud je URL validní
  */
-export const isValidPhone = (phone) => {
-  if (!phone) return true; // Optional field
-  const cleanPhone = phone.replace(/\s/g, '');
-
-  // Czech formats: +420XXXXXXXXX, 00420XXXXXXXXX, or any digits (flexible)
-  // Must have at least 3 digits
-  const phoneRegex = /^(\+420|00420)?\d{3,}$/;
-  return phoneRegex.test(cleanPhone);
-};
-
-/**
- * Format phone number to Czech standard
- * @param {string} phone
- * @returns {string} - Formatted as +420 XXX XXX XXX
- */
-export const formatPhone = (phone) => {
-  if (!phone) return '';
-
-  const cleaned = phone.replace(/\D/g, '');
-
-  // If starts with 420, remove it
-  const digits = cleaned.startsWith('420') ? cleaned.slice(3) : cleaned;
-
-  if (digits.length === 9) {
-    return `+420 ${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
-  }
-
-  return phone; // Return original if can't format
-};
-
-/**
- * Social media URL prefixes
- */
-export const SOCIAL_PREFIXES = {
-  facebook: 'https://facebook.com/',
-  instagram: 'https://instagram.com/',
-  linkedin: 'https://linkedin.com/in/',
-  website: 'https://',
-  telegram: 'https://t.me/',
-};
-
-/**
- * Auto-add prefix to social media URL if missing
- * @param {string} value - User input
- * @param {string} platform - 'facebook' | 'instagram' | 'linkedin' | 'website' | 'telegram'
- * @returns {string}
- */
-export const formatSocialUrl = (value, platform) => {
-  if (!value) return '';
-
-  const prefix = SOCIAL_PREFIXES[platform];
-  if (!prefix) return value;
-
-  // If already has http:// or https://, return as-is
-  if (value.startsWith('http://') || value.startsWith('https://')) {
-    return value;
-  }
-
-  // If starts with @, remove it (for Instagram/Telegram)
-  const cleaned = value.startsWith('@') ? value.slice(1) : value;
-
-  // Add prefix
-  return prefix + cleaned;
-};
-
-/**
- * Validate URL format
- * @param {string} url
- * @returns {boolean}
- */
-export const isValidUrl = (url) => {
-  if (!url) return true; // Optional
-
+export const validateUrl = (url) => {
   try {
     new URL(url);
     return true;
@@ -105,26 +28,67 @@ export const isValidUrl = (url) => {
 };
 
 /**
- * Get validation error message for field
- * @param {string} fieldName
- * @param {string} value
- * @param {string} fieldType - 'email' | 'phone' | 'url'
- * @returns {string|null}
+ * Validace telefonního čísla (české formáty)
+ * @param {string} phone - Telefonní číslo k validaci
+ * @returns {boolean} - True pokud je číslo validní
  */
-export const getFieldError = (fieldName, value, fieldType) => {
-  if (!value) return null;
+export const validatePhone = (phone) => {
+  const re = /^(\+420)?[0-9\s]{9,13}$/;
+  return re.test(phone?.replace(/\s/g, ''));
+};
 
-  switch (fieldType) {
-    case 'email':
-      return isValidEmail(value) ? null : 'Neplatný formát emailu';
+/**
+ * Validace minimální délky
+ * @param {string} value - Hodnota k validaci
+ * @param {number} minLength - Minimální délka
+ * @returns {boolean} - True pokud splňuje min. délku
+ */
+export const validateMinLength = (value, minLength) => {
+  return value && value.length >= minLength;
+};
 
-    case 'phone':
-      return isValidPhone(value) ? null : 'Neplatný formát telefonu (očekáváno: čísla, může začínat +420)';
+/**
+ * Validace maximální délky
+ * @param {string} value - Hodnota k validaci
+ * @param {number} maxLength - Maximální délka
+ * @returns {boolean} - True pokud splňuje max. délku
+ */
+export const validateMaxLength = (value, maxLength) => {
+  return !value || value.length <= maxLength;
+};
 
-    case 'url':
-      return isValidUrl(value) ? null : 'Neplatný formát URL (musí začínat https://)';
-
-    default:
-      return null;
+/**
+ * Validace povinného pole
+ * @param {any} value - Hodnota k validaci
+ * @returns {boolean} - True pokud není prázdné
+ */
+export const validateRequired = (value) => {
+  if (typeof value === 'string') {
+    return value.trim().length > 0;
   }
+  return value !== null && value !== undefined;
+};
+
+/**
+ * Validace číselného rozsahu
+ * @param {number} value - Hodnota k validaci
+ * @param {number} min - Minimální hodnota
+ * @param {number} max - Maximální hodnota
+ * @returns {boolean} - True pokud je v rozsahu
+ */
+export const validateRange = (value, min, max) => {
+  const num = Number(value);
+  return !isNaN(num) && num >= min && num <= max;
+};
+
+/**
+ * Validace hesla (alespoň 8 znaků, obsahuje číslo a písmeno)
+ * @param {string} password - Heslo k validaci
+ * @returns {boolean} - True pokud je heslo dostatečně silné
+ */
+export const validatePassword = (password) => {
+  if (!password || password.length < 8) return false;
+  const hasNumber = /\d/.test(password);
+  const hasLetter = /[a-zA-Z]/.test(password);
+  return hasNumber && hasLetter;
 };

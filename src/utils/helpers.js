@@ -1,8 +1,36 @@
 import { format, formatDistanceToNow, differenceInDays, isPast, isToday, isTomorrow } from 'date-fns';
 import { cs } from 'date-fns/locale';
 
+// Import univerzálních funkcí ze shared
+export {
+  validateEmail,
+  validateUrl,
+} from '../../shared/src/utils/validation';
+
+export {
+  saveToLocalStorage,
+  getFromLocalStorage,
+  removeFromLocalStorage,
+} from '../../shared/src/utils/storage';
+
+export {
+  formatPrice,
+  formatNumber,
+  truncateText,
+  capitalize,
+  formatPercent,
+  formatFileSize,
+} from '../../shared/src/utils/formatting';
+
+export {
+  calculateProgress,
+  getProgressColor,
+  estimateTimeRemaining,
+  formatDuration,
+} from '../../shared/src/utils/progress';
+
 // ============================================
-// DATUM A ČAS
+// DATUM A ČAS (StudyPro-specifické)
 // ============================================
 
 export const formatDate = (date) => {
@@ -97,47 +125,8 @@ export const getLevelProgress = (points) => {
   return (currentLevelPoints / totalLevelPoints) * 100;
 };
 
-// ============================================
-// PROGRESS & STATISTIKY
-// ============================================
-
-export const calculateProgress = (completed, total) => {
-  if (!total || total === 0) return 0;
-  return Math.round((completed / total) * 100);
-};
-
-export const getProgressColor = (percentage) => {
-  if (percentage >= 80) return 'success';
-  if (percentage >= 50) return 'info';
-  if (percentage >= 20) return 'warning';
-  return 'error';
-};
-
-export const estimateTimeRemaining = (totalHours, progress) => {
-  if (!totalHours || progress >= 100) return 0;
-
-  const completedHours = (totalHours * progress) / 100;
-  const remainingHours = totalHours - completedHours;
-
-  return Math.ceil(remainingHours);
-};
-
-export const formatDuration = (minutes) => {
-  if (!minutes) return '0 min';
-
-  if (minutes < 60) {
-    return `${minutes} min`;
-  }
-
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-
-  if (mins === 0) {
-    return `${hours} h`;
-  }
-
-  return `${hours} h ${mins} min`;
-};
+// calculateProgress, getProgressColor, estimateTimeRemaining, formatDuration
+// jsou importované ze shared/src/utils/progress.js
 
 // ============================================
 // KURZY
@@ -236,48 +225,8 @@ export const filterCourses = (courses, filters) => {
   return filtered;
 };
 
-// ============================================
-// VALIDACE
-// ============================================
-
-export const validateEmail = (email) => {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-};
-
-export const validateUrl = (url) => {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-// ============================================
-// FORMÁTOVÁNÍ
-// ============================================
-
-export const formatPrice = (price, currency = 'CZK') => {
-  if (!price) return 'Zdarma';
-
-  const formatted = new Intl.NumberFormat('cs-CZ', {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 0,
-  }).format(price);
-
-  return formatted;
-};
-
-export const formatNumber = (num) => {
-  return new Intl.NumberFormat('cs-CZ').format(num);
-};
-
-export const truncateText = (text, maxLength = 100) => {
-  if (!text || text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + '...';
-};
+// validateEmail, validateUrl - importované ze shared/src/utils/validation.js
+// formatPrice, formatNumber, truncateText - importované ze shared/src/utils/formatting.js
 
 // ============================================
 // COLORS & THEMES
@@ -325,32 +274,5 @@ export const getStatusColor = (status) => {
   return colors[status] || '#9e9e9e';
 };
 
-// ============================================
-// LOCAL STORAGE
-// ============================================
-
-export const saveToLocalStorage = (key, value) => {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error('Error saving to localStorage:', error);
-  }
-};
-
-export const getFromLocalStorage = (key, defaultValue = null) => {
-  try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : defaultValue;
-  } catch (error) {
-    console.error('Error reading from localStorage:', error);
-    return defaultValue;
-  }
-};
-
-export const removeFromLocalStorage = (key) => {
-  try {
-    localStorage.removeItem(key);
-  } catch (error) {
-    console.error('Error removing from localStorage:', error);
-  }
-};
+// saveToLocalStorage, getFromLocalStorage, removeFromLocalStorage
+// jsou importované ze shared/src/utils/storage.js
