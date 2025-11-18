@@ -8,6 +8,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  db: {
+    schema: 'studypro', // Používáme studypro schéma místo public
+  },
   auth: {
     autoRefreshToken: true,
     persistSession: true,
