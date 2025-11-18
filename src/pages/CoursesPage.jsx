@@ -9,7 +9,7 @@ import {
   InputAdornment,
   Fab,
 } from '@mui/material';
-import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
+import { Plus, Search } from 'lucide-react';
 import { useCourses } from '../contexts/CourseContext';
 import { CourseCard } from '../components/courses/CourseCard';
 import { CourseForm } from '../components/courses/CourseForm';
@@ -85,7 +85,7 @@ export const CoursesPage = () => {
         <Button
           variant="contained"
           size="large"
-          startIcon={<AddIcon />}
+          startIcon={<Plus size={20} />}
           onClick={() => setFormOpen(true)}
           sx={{ display: { xs: 'none', sm: 'flex' } }}
         >
@@ -105,7 +105,7 @@ export const CoursesPage = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon />
+                    <Search size={20} />
                   </InputAdornment>
                 ),
               }}
@@ -228,7 +228,7 @@ export const CoursesPage = () => {
         }}
         onClick={() => setFormOpen(true)}
       >
-        <AddIcon />
+        <Plus size={24} />
       </Fab>
     </Box>
   );

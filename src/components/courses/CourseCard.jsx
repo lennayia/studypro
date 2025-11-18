@@ -10,13 +10,7 @@ import {
   MenuItem,
   ListItemIcon,
 } from '@mui/material';
-import {
-  MoreVert as MoreIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  PlayArrow as PlayIcon,
-  CalendarToday as CalendarIcon,
-} from '@mui/icons-material';
+import { MoreVertical, Edit, Trash2, Play, Calendar } from 'lucide-react';
 import { useState } from 'react';
 import {
   getCourseTypeLabel,
@@ -98,19 +92,19 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
           }}
           size="small"
         >
-          <MoreIcon />
+          <MoreVertical size={20} />
         </IconButton>
 
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           <MenuItem onClick={handleEdit}>
             <ListItemIcon>
-              <EditIcon fontSize="small" />
+              <Edit size={18} />
             </ListItemIcon>
             Upravit
           </MenuItem>
           <MenuItem onClick={handleDelete}>
             <ListItemIcon>
-              <DeleteIcon fontSize="small" />
+              <Trash2 size={18} />
             </ListItemIcon>
             Smazat
           </MenuItem>
@@ -195,7 +189,7 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
         {/* Deadline */}
         {deadlineStatus && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <CalendarIcon fontSize="small" color={deadlineStatus.color} />
+            <Calendar size={16} />
             <Typography variant="caption" color={`${deadlineStatus.color}.main`} fontWeight={600}>
               Přístup: {deadlineStatus.text}
             </Typography>
@@ -221,7 +215,7 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
               fontSize: '0.875rem',
             }}
           >
-            <PlayIcon />
+            <Play size={18} />
             {course.status === 'not_started' ? 'Začít studovat' : 'Pokračovat'}
           </Box>
         </Box>

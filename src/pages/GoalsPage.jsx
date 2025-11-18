@@ -1,5 +1,5 @@
 import { Box, Typography, Grid, Card, CardContent, Chip, LinearProgress } from '@mui/material';
-import { EmojiEvents as TrophyIcon, Stars as StarsIcon } from '@mui/icons-material';
+import { Star } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
 import { LoadingSpinner } from '../../shared/src/components/common';
@@ -36,8 +36,8 @@ export const GoalsPage = () => {
 
             <Grid item xs={12} md={4}>
               <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-                  <StarsIcon sx={{ fontSize: 40, mr: 1 }} />
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                  <Star size={40} fill="currentColor" />
                   {profile?.total_points || 0}
                 </Typography>
                 <Typography variant="body1">Celkem bodů</Typography>

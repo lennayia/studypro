@@ -20,17 +20,7 @@ import {
   Badge,
   Chip,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  School as SchoolIcon,
-  EmojiEvents as TrophyIcon,
-  Timeline as TimelineIcon,
-  Settings as SettingsIcon,
-  Logout as LogoutIcon,
-  LocalFireDepartment as FireIcon,
-  Stars as StarsIcon,
-} from '@mui/icons-material';
+import { Menu, Home, BookOpen, Trophy, BarChart, Settings, LogOut, Flame, Star } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getStreakEmoji, getLevelFromPoints } from '../../utils/helpers';
@@ -65,10 +55,10 @@ export const Layout = ({ children }) => {
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { text: 'Moje kurzy', icon: <SchoolIcon />, path: '/courses' },
-    { text: 'Cíle & Úspěchy', icon: <TrophyIcon />, path: '/goals' },
-    { text: 'Statistiky', icon: <TimelineIcon />, path: '/stats' },
+    { text: 'Dashboard', icon: <Home size={20} />, path: '/dashboard' },
+    { text: 'Moje kurzy', icon: <BookOpen size={20} />, path: '/courses' },
+    { text: 'Cíle & Úspěchy', icon: <Trophy size={20} />, path: '/goals' },
+    { text: 'Statistiky', icon: <BarChart size={20} />, path: '/stats' },
   ];
 
   const drawer = (
@@ -121,7 +111,7 @@ export const Layout = ({ children }) => {
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Chip
               size="small"
-              icon={<FireIcon />}
+              icon={<Flame size={16} />}
               label={`${profile.current_streak || 0} ${getStreakEmoji(profile.current_streak || 0)}`}
               sx={{
                 bgcolor: 'rgba(255,255,255,0.2)',
@@ -131,7 +121,7 @@ export const Layout = ({ children }) => {
             />
             <Chip
               size="small"
-              icon={<StarsIcon />}
+              icon={<Star size={16} />}
               label={`${profile.total_points || 0} bodů`}
               sx={{
                 bgcolor: 'rgba(255,255,255,0.2)',
@@ -183,7 +173,7 @@ export const Layout = ({ children }) => {
         <ListItem disablePadding sx={{ px: 1 }}>
           <ListItemButton onClick={() => navigate('/settings')} sx={{ borderRadius: 2 }}>
             <ListItemIcon>
-              <SettingsIcon />
+              <Settings size={20} />
             </ListItemIcon>
             <ListItemText primary="Nastavení" />
           </ListItemButton>
@@ -213,7 +203,7 @@ export const Layout = ({ children }) => {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { md: 'none' }, color: 'text.primary' }}
           >
-            <MenuIcon />
+            <Menu size={24} />
           </IconButton>
 
           <Typography
@@ -238,14 +228,14 @@ export const Layout = ({ children }) => {
           >
             <MenuItem onClick={() => navigate('/settings')}>
               <ListItemIcon>
-                <SettingsIcon fontSize="small" />
+                <Settings size={18} />
               </ListItemIcon>
               Nastavení
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleSignOut}>
               <ListItemIcon>
-                <LogoutIcon fontSize="small" />
+                <LogOut size={18} />
               </ListItemIcon>
               Odhlásit se
             </MenuItem>

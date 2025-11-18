@@ -1,5 +1,5 @@
 import { Box, Button, Typography, Container, Paper, Alert } from '@mui/material';
-import { Google as GoogleIcon } from '@mui/icons-material';
+import { LogIn } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -106,7 +106,7 @@ export const LoginPage = () => {
             fullWidth
             size="large"
             variant="contained"
-            startIcon={<GoogleIcon />}
+            startIcon={<LogIn size={24} />}
             onClick={handleGoogleSignIn}
             disabled={loading}
             sx={{

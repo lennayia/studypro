@@ -1,12 +1,6 @@
 import { Grid, Box, Typography, Card, CardContent, Button } from '@mui/material';
-import {
-  School as SchoolIcon,
-  CheckCircle as CheckIcon,
-  TrendingUp as TrendingIcon,
-  AccessTime as TimeIcon,
-  Add as AddIcon,
-} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { GraduationCap, CheckCircle, TrendingUp, Percent, Plus } from 'lucide-react';
 import { useCourses } from '../contexts/CourseContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
@@ -71,7 +65,7 @@ export const DashboardPage = () => {
           <StatsCard
             title="Celkem kurzů"
             value={totalCourses}
-            icon={<SchoolIcon />}
+            icon={<GraduationCap size={24} />}
             color="primary"
           />
         </Grid>
@@ -80,7 +74,7 @@ export const DashboardPage = () => {
           <StatsCard
             title="Dokončeno"
             value={completedCourses}
-            icon={<CheckIcon />}
+            icon={<CheckCircle size={24} />}
             color="success"
           />
         </Grid>
@@ -89,7 +83,7 @@ export const DashboardPage = () => {
           <StatsCard
             title="Probíhá"
             value={inProgressCourses}
-            icon={<TrendingIcon />}
+            icon={<TrendingUp size={24} />}
             color="info"
           />
         </Grid>
@@ -98,7 +92,7 @@ export const DashboardPage = () => {
           <StatsCard
             title="Průměrný pokrok"
             value={`${avgProgress}%`}
-            icon={<TimeIcon />}
+            icon={<Percent size={24} />}
             color="warning"
           />
         </Grid>
@@ -132,7 +126,7 @@ export const DashboardPage = () => {
           </Typography>
           <Button
             variant="contained"
-            startIcon={<AddIcon />}
+            startIcon={<Plus size={20} />}
             onClick={() => navigate('/courses')}
           >
             Přidat kurz

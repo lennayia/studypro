@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, Box } from '@mui/material';
-import { TrendingUp as TrendingUpIcon } from '@mui/icons-material';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 /**
  * StatsCard - Univerzální statistická karta
@@ -65,7 +65,7 @@ export const StatsCard = ({
 
         {trend !== undefined && trend !== null && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 2 }}>
-            <TrendingUpIcon fontSize="small" />
+            {trend >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
             <Typography variant="caption">
               {trend > 0 ? '+' : ''}{trend}% {trendText}
             </Typography>

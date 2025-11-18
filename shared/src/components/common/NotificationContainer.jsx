@@ -4,21 +4,15 @@
 import React from 'react';
 import { Alert, AlertTitle, IconButton } from '@mui/material';
 import { useNotification } from '../../context/NotificationContext';
-import {
-  CheckCircleOutline,
-  ErrorOutline,
-  InfoOutlined,
-  WarningAmberOutlined,
-  Close as CloseIcon,
-} from '@mui/icons-material';
+import { CheckCircle, AlertCircle, Info, AlertTriangle, X } from 'lucide-react';
 import { BORDER_RADIUS } from '../../styles/responsive.js';
 import './Notification.css';
 
 const customIcons = {
-  success: <CheckCircleOutline fontSize="inherit" />,
-  error: <ErrorOutline fontSize="inherit" />,
-  info: <InfoOutlined fontSize="inherit" />,
-  warning: <WarningAmberOutlined fontSize="inherit" />,
+  success: <CheckCircle size={22} />,
+  error: <AlertCircle size={22} />,
+  info: <Info size={22} />,
+  warning: <AlertTriangle size={22} />,
 };
 
 export const NotificationContainer = () => {
@@ -68,7 +62,7 @@ export const NotificationContainer = () => {
                   size="small"
                   onClick={() => removeNotification(notification.id)}
                 >
-                  <CloseIcon fontSize="inherit" />
+                  <X size={18} />
                 </IconButton>
               }
             >

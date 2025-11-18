@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import { Google as GoogleIcon } from '@mui/icons-material';
+import { LogIn } from 'lucide-react';
 import { useNotification } from '../../context/NotificationContext.jsx';
 import { BORDER_RADIUS } from '../../styles/responsive.js';
 
@@ -146,7 +146,7 @@ const GoogleSignInButton = ({
         <Button
           variant={variant}
           size="large"
-          startIcon={loading ? <CircularProgress size={20} /> : <GoogleIcon />}
+          startIcon={loading ? <CircularProgress size={20} /> : <LogIn size={20} />}
           onClick={handleGoogleSignIn}
           disabled={loading}
           sx={getButtonStyles()}
