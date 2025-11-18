@@ -20,10 +20,14 @@ export const AuthProvider = ({ children }) => {
   // Dev mode - skip authentication
   const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
 
+  // Debug: zkontroluj jestli je dev mode aktivní
+  console.log('🔧 DEV MODE:', isDevMode, 'Raw value:', import.meta.env.VITE_DEV_MODE);
+
   // Načtení aktuálního uživatele při startu
   useEffect(() => {
     // Dev mode: použij fake user a přeskoč autentizaci
     if (isDevMode) {
+      console.log('✅ Dev mode aktivní - používám fake user');
       const fakeUser = {
         id: 'dev-user-123',
         email: 'dev@studypro.test',
