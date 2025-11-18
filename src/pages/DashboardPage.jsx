@@ -1,6 +1,20 @@
 import { Grid, Box, Typography, Card, CardContent, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { GraduationCap, CheckCircle, TrendingUp, Percent, Plus, BarChart, Flame, Zap, BookOpen, Target, Settings } from 'lucide-react';
+import {
+  CoursesTotalIcon,
+  CompletedIcon,
+  ProgressIcon,
+  PercentIcon,
+  ChartTitleIcon,
+  ActiveCoursesSectionIcon,
+  AddButtonIcon,
+  EmptyCoursesIcon,
+  QuickActionsSectionIcon,
+  CoursesNavIcon,
+  GoalsNavIcon,
+  StatsNavIcon,
+  SettingsNavIcon,
+} from '../../shared/src/components/icons';
 import { useCourses } from '../contexts/CourseContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
@@ -65,7 +79,7 @@ export const DashboardPage = () => {
           <StatsCard
             title="Celkem kurzů"
             value={totalCourses}
-            icon={<GraduationCap size={24} />}
+            icon={<CoursesTotalIcon />}
             color="primary"
           />
         </Grid>
@@ -74,7 +88,7 @@ export const DashboardPage = () => {
           <StatsCard
             title="Dokončeno"
             value={completedCourses}
-            icon={<CheckCircle size={24} />}
+            icon={<CompletedIcon />}
             color="success"
           />
         </Grid>
@@ -83,7 +97,7 @@ export const DashboardPage = () => {
           <StatsCard
             title="Probíhá"
             value={inProgressCourses}
-            icon={<TrendingUp size={24} />}
+            icon={<ProgressIcon />}
             color="info"
           />
         </Grid>
@@ -92,7 +106,7 @@ export const DashboardPage = () => {
           <StatsCard
             title="Průměrný pokrok"
             value={`${avgProgress}%`}
-            icon={<Percent size={24} />}
+            icon={<PercentIcon />}
             color="warning"
           />
         </Grid>
@@ -112,7 +126,7 @@ export const DashboardPage = () => {
           <ProgressChart
             title={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <BarChart size={20} />
+                <ChartTitleIcon />
                 Tvoje studijní aktivita (poslední týden)
               </Box>
             }
@@ -127,14 +141,14 @@ export const DashboardPage = () => {
       <Box sx={{ mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            <Flame size={24} color="#f97316" />
+            <ActiveCoursesSectionIcon />
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
               Aktivní kurzy
             </Typography>
           </Box>
           <Button
             variant="contained"
-            startIcon={<Plus size={20} />}
+            startIcon={<AddButtonIcon />}
             onClick={() => navigate('/courses')}
           >
             Přidat kurz
@@ -156,7 +170,7 @@ export const DashboardPage = () => {
           <Card>
             <CardContent>
               <EmptyState
-                icon={<BookOpen size={64} color="#6366f1" />}
+                icon={<EmptyCoursesIcon />}
                 title="Žádné aktivní kurzy"
                 description="Začni studovat! Přidej svůj první kurz a rozjeď svou studijní kariéru."
                 actionLabel="Přidat kurz"
@@ -171,7 +185,7 @@ export const DashboardPage = () => {
       <Card>
         <CardContent>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-            <Zap size={22} color="#eab308" />
+            <QuickActionsSectionIcon />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               Rychlé akce
             </Typography>
@@ -181,7 +195,7 @@ export const DashboardPage = () => {
               <Button
                 fullWidth
                 variant="outlined"
-                startIcon={<BookOpen size={18} />}
+                startIcon={<CoursesNavIcon />}
                 onClick={() => navigate('/courses')}
                 sx={{ py: 2 }}
               >
@@ -192,7 +206,7 @@ export const DashboardPage = () => {
               <Button
                 fullWidth
                 variant="outlined"
-                startIcon={<Target size={18} />}
+                startIcon={<GoalsNavIcon />}
                 onClick={() => navigate('/goals')}
                 sx={{ py: 2 }}
               >
@@ -203,7 +217,7 @@ export const DashboardPage = () => {
               <Button
                 fullWidth
                 variant="outlined"
-                startIcon={<BarChart size={18} />}
+                startIcon={<StatsNavIcon />}
                 onClick={() => navigate('/stats')}
                 sx={{ py: 2 }}
               >
@@ -214,7 +228,7 @@ export const DashboardPage = () => {
               <Button
                 fullWidth
                 variant="outlined"
-                startIcon={<Settings size={18} />}
+                startIcon={<SettingsNavIcon />}
                 onClick={() => navigate('/settings')}
                 sx={{ py: 2 }}
               >

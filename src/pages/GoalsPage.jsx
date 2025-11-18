@@ -1,5 +1,10 @@
 import { Box, Typography, Grid, Card, CardContent, Chip, LinearProgress } from '@mui/material';
-import { Star, Trophy, Award, Target } from 'lucide-react';
+import {
+  GoalsPageIcon,
+  StarDisplayIcon,
+  AchievementsSectionIcon,
+  GoalsSectionIcon,
+} from '../../shared/src/components/icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
 import { LoadingSpinner } from '../../shared/src/components/common';
@@ -18,7 +23,7 @@ export const GoalsPage = () => {
     <Box>
       {/* Header */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 4 }}>
-        <Trophy size={28} color="#eab308" />
+        <GoalsPageIcon />
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Cíle & Úspěchy
         </Typography>
@@ -40,7 +45,7 @@ export const GoalsPage = () => {
             <Grid item xs={12} md={4}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h3" sx={{ fontWeight: 700, mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-                  <Star size={40} fill="currentColor" />
+                  <StarDisplayIcon fill="currentColor" />
                   {profile?.total_points || 0}
                 </Typography>
                 <Typography variant="body1">Celkem bodů</Typography>
@@ -65,7 +70,7 @@ export const GoalsPage = () => {
       {/* Achievements */}
       <Box sx={{ mb: 4 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
-          <Award size={22} color="#8b5cf6" />
+          <AchievementsSectionIcon />
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
             Odznaky ({userAchievements.length}/{achievements.length})
           </Typography>
@@ -130,7 +135,7 @@ export const GoalsPage = () => {
       {/* Goals */}
       <Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
-          <Target size={22} color="#ec4899" />
+          <GoalsSectionIcon />
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
             Moje cíle
           </Typography>

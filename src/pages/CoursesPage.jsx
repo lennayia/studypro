@@ -9,7 +9,13 @@ import {
   InputAdornment,
   Fab,
 } from '@mui/material';
-import { Plus, Search, BookOpen, GraduationCap } from 'lucide-react';
+import {
+  CoursesPageIcon,
+  AddButtonIcon,
+  SearchButtonIcon,
+  EmptyGraduationIcon,
+  EmptySearchIcon,
+} from '../../shared/src/components/icons';
 import { useCourses } from '../contexts/CourseContext';
 import { CourseCard } from '../components/courses/CourseCard';
 import { CourseForm } from '../components/courses/CourseForm';
@@ -75,7 +81,7 @@ export const CoursesPage = () => {
       <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
-            <BookOpen size={28} color="#6366f1" />
+            <CoursesPageIcon />
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
               Moje kurzy
             </Typography>
@@ -88,7 +94,7 @@ export const CoursesPage = () => {
         <Button
           variant="contained"
           size="large"
-          startIcon={<Plus size={20} />}
+          startIcon={<AddButtonIcon />}
           onClick={() => setFormOpen(true)}
           sx={{ display: { xs: 'none', sm: 'flex' } }}
         >
@@ -108,7 +114,7 @@ export const CoursesPage = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Search size={20} />
+                    <SearchButtonIcon />
                   </InputAdornment>
                 ),
               }}
@@ -198,7 +204,7 @@ export const CoursesPage = () => {
         </Grid>
       ) : courses.length === 0 ? (
         <EmptyState
-          icon={<GraduationCap size={64} color="#6366f1" />}
+          icon={<EmptyGraduationIcon />}
           title="Zatím žádné kurzy"
           description="Přidej svůj první kurz a začni sledovat svůj studijní pokrok!"
           actionLabel="Přidat první kurz"
@@ -206,7 +212,7 @@ export const CoursesPage = () => {
         />
       ) : (
         <EmptyState
-          icon={<Search size={64} color="#8b5cf6" />}
+          icon={<EmptySearchIcon />}
           title="Žádné kurzy nenalezeny"
           description="Zkus upravit filtry nebo hledání"
         />
@@ -231,7 +237,7 @@ export const CoursesPage = () => {
         }}
         onClick={() => setFormOpen(true)}
       >
-        <Plus size={24} />
+        <AddButtonIcon size={24} />
       </Fab>
     </Box>
   );

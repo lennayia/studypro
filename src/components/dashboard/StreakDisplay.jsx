@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, Box, LinearProgress } from '@mui/material';
-import { Flame } from 'lucide-react';
+import { StreakDisplayIcon } from '../../../shared/src/components/icons';
 import { getStreakEmoji } from '../../utils/helpers';
 
 export const StreakDisplay = ({ currentStreak, longestStreak, lastActivityDate }) => {
@@ -25,7 +25,7 @@ export const StreakDisplay = ({ currentStreak, longestStreak, lastActivityDate }
               justifyContent: 'center',
             }}
           >
-            <Flame size={40} />
+            <StreakDisplayIcon />
           </Box>
 
           <Box sx={{ flex: 1 }}>

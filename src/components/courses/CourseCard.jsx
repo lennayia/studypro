@@ -10,7 +10,15 @@ import {
   MenuItem,
   ListItemIcon,
 } from '@mui/material';
-import { MoreVertical, Edit, Trash2, Play, Calendar, User, DollarSign } from 'lucide-react';
+import {
+  MoreActionIcon,
+  EditActionIcon,
+  DeleteActionIcon,
+  PlayActionIcon,
+  CalendarMetaIcon,
+  UserMetaIcon,
+  PriceMetaIcon,
+} from '../../../shared/src/components/icons';
 import { useState } from 'react';
 import {
   getCourseTypeLabel,
@@ -92,19 +100,19 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
           }}
           size="small"
         >
-          <MoreVertical size={20} />
+          <MoreActionIcon />
         </IconButton>
 
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           <MenuItem onClick={handleEdit}>
             <ListItemIcon>
-              <Edit size={18} />
+              <EditActionIcon />
             </ListItemIcon>
             Upravit
           </MenuItem>
           <MenuItem onClick={handleDelete}>
             <ListItemIcon>
-              <Trash2 size={18} />
+              <DeleteActionIcon />
             </ListItemIcon>
             Smazat
           </MenuItem>
@@ -152,7 +160,7 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
 
           {course.instructor && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-              <User size={14} />
+              <UserMetaIcon />
               <Typography variant="caption" color="text.secondary">
                 {course.instructor}
               </Typography>
@@ -192,7 +200,7 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
         {/* Deadline */}
         {deadlineStatus && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <Calendar size={16} />
+            <CalendarMetaIcon />
             <Typography variant="caption" color={`${deadlineStatus.color}.main`} fontWeight={600}>
               Přístup: {deadlineStatus.text}
             </Typography>
@@ -202,7 +210,7 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
         {/* Price */}
         {course.price && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <DollarSign size={14} />
+            <PriceMetaIcon />
             <Typography variant="caption" color="text.secondary">
               {formatPrice(course.price, course.currency)}
             </Typography>
@@ -221,7 +229,7 @@ export const CourseCard = ({ course, onClick, onEdit, onDelete }) => {
               fontSize: '0.875rem',
             }}
           >
-            <Play size={18} />
+            <PlayActionIcon />
             {course.status === 'not_started' ? 'Začít studovat' : 'Pokračovat'}
           </Box>
         </Box>

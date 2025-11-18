@@ -20,7 +20,17 @@ import {
   Badge,
   Chip,
 } from '@mui/material';
-import { Menu as MenuIcon, Home, BookOpen, Trophy, BarChart, Settings, LogOut, Flame, Star, GraduationCap } from 'lucide-react';
+import {
+  LogoIconSmall,
+  HomeNavIcon,
+  CoursesNavIcon,
+  GoalsNavIcon,
+  StatsNavIcon,
+  SettingsNavIcon,
+  LogoutNavIcon,
+  MenuNavIcon,
+} from '../../../shared/src/components/icons';
+import { Flame, Star } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getStreakEmoji, getLevelFromPoints } from '../../utils/helpers';
@@ -55,10 +65,10 @@ export const Layout = ({ children }) => {
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <Home size={20} />, path: '/dashboard' },
-    { text: 'Moje kurzy', icon: <BookOpen size={20} />, path: '/courses' },
-    { text: 'Cíle & Úspěchy', icon: <Trophy size={20} />, path: '/goals' },
-    { text: 'Statistiky', icon: <BarChart size={20} />, path: '/stats' },
+    { text: 'Dashboard', icon: <HomeNavIcon />, path: '/dashboard' },
+    { text: 'Moje kurzy', icon: <CoursesNavIcon />, path: '/courses' },
+    { text: 'Cíle & Úspěchy', icon: <GoalsNavIcon />, path: '/goals' },
+    { text: 'Statistiky', icon: <StatsNavIcon />, path: '/stats' },
   ];
 
   const drawer = (
@@ -66,7 +76,7 @@ export const Layout = ({ children }) => {
       {/* Logo & Brand */}
       <Box sx={{ p: 3, textAlign: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 0.5 }}>
-          <GraduationCap size={28} color="#6366f1" />
+          <LogoIconSmall />
           <Typography
             variant="h5"
             sx={{
@@ -175,7 +185,7 @@ export const Layout = ({ children }) => {
         <ListItem disablePadding sx={{ px: 1 }}>
           <ListItemButton onClick={() => navigate('/settings')} sx={{ borderRadius: 2 }}>
             <ListItemIcon>
-              <Settings size={20} />
+              <SettingsNavIcon />
             </ListItemIcon>
             <ListItemText primary="Nastavení" />
           </ListItemButton>
@@ -205,7 +215,7 @@ export const Layout = ({ children }) => {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { md: 'none' }, color: 'text.primary' }}
           >
-            <MenuIcon size={24} />
+            <MenuNavIcon />
           </IconButton>
 
           <Typography
@@ -230,14 +240,14 @@ export const Layout = ({ children }) => {
           >
             <MenuItem onClick={() => navigate('/settings')}>
               <ListItemIcon>
-                <Settings size={18} />
+                <SettingsNavIcon size={18} />
               </ListItemIcon>
               Nastavení
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleSignOut}>
               <ListItemIcon>
-                <LogOut size={18} />
+                <LogoutNavIcon size={18} />
               </ListItemIcon>
               Odhlásit se
             </MenuItem>
