@@ -1,11 +1,20 @@
 import { Box, Button, Typography, Container, Paper, Alert } from '@mui/material';
 import { Google as GoogleIcon } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export const LoginPage = () => {
-  const { signInWithGoogle, error } = useAuth();
+  const { signInWithGoogle, error, user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Redirect po přihlášení
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   const handleGoogleSignIn = async () => {
     try {

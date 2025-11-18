@@ -298,6 +298,33 @@ export const getRandomGradient = () => {
   return gradients[Math.floor(Math.random() * gradients.length)];
 };
 
+export const getCategoryColor = (category) => {
+  const colors = {
+    programming: '#667eea',
+    design: '#f093fb',
+    business: '#4facfe',
+    marketing: '#43e97b',
+    language: '#fa709a',
+    personal_development: '#30cfd0',
+    health: '#a8edea',
+    music: '#ff9a9e',
+  };
+
+  return colors[category] || '#667eea';
+};
+
+export const getStatusColor = (status) => {
+  const colors = {
+    not_started: '#9e9e9e',
+    in_progress: '#2196f3',
+    completed: '#4caf50',
+    paused: '#ff9800',
+    expired: '#f44336',
+  };
+
+  return colors[status] || '#9e9e9e';
+};
+
 // ============================================
 // LOCAL STORAGE
 // ============================================

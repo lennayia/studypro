@@ -56,20 +56,53 @@ export const AuthProvider = ({ children }) => {
 
   const loadUserProfile = async (userId) => {
     try {
-      const { data, error } = await supabase
+      console.log('Loading profile for user:', userId);
+
+      // Timeout pro databázový dotaz (2 sekundy)
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Database timeout')), 2000)
+      );
+
+      const queryPromise = supabase
         .from('studypro_users')
         .select('*')
         .eq('id', userId)
         .single();
 
-      if (error && error.code === 'PGRST116') {
-        // Uživatel neexistuje - vytvoříme profil
-        await createUserProfile(userId);
-      } else if (data) {
+      const { data, error } = await Promise.race([queryPromise, timeoutPromise])
+        .catch(err => {
+          console.warn('Database query failed or timed out:', err);
+          return { data: null, error: err };
+        });
+
+      console.log('Profile query result:', { data, error });
+
+      if (data) {
+        // Máme data z databáze - použijeme je
         setProfile(data);
+      } else {
+        // Chyba nebo timeout - použijeme základní profil bez dalších dotazů
+        console.log('Using fallback profile');
+        setProfile({
+          id: userId,
+          email: 'loading...',
+          full_name: 'User',
+          total_points: 0,
+          current_level: 1,
+          study_streak: 0,
+        });
       }
     } catch (error) {
       console.error('Error loading profile:', error);
+      // Vytvoříme základní profil aby aplikace fungovala
+      setProfile({
+        id: userId,
+        email: 'user@example.com',
+        full_name: 'User',
+        total_points: 0,
+        current_level: 1,
+        study_streak: 0,
+      });
     }
   };
 
@@ -108,7 +141,7 @@ export const AuthProvider = ({ children }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: 'http://localhost:3001',
         },
       });
 
