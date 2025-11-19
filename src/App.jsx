@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { CssBaseline, Box } from '@mui/material';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -8,15 +9,17 @@ import { StudySessionProvider } from './contexts/StudySessionContext';
 import { Layout } from './components/common/Layout';
 import { LoadingSpinner, ErrorBoundary } from '../shared/src/components/common';
 import { NotificationProvider } from '../shared/src/context/NotificationContext';
-import { LoginPage } from './pages/LoginPage';
-import { DashboardPage } from './pages/DashboardPage';
-import { CoursesPage } from './pages/CoursesPage';
-import { CourseDetailPage } from './pages/CourseDetailPage';
-import { GoalsPage } from './pages/GoalsPage';
-import { StatsPage } from './pages/StatsPage';
-import { StudyPage } from './pages/StudyPage';
-import { CalendarPage } from './pages/CalendarPage';
-import { SettingsPage } from './pages/SettingsPage';
+
+// Lazy load pages for better performance
+const LoginPage = lazy(() => import('./pages/LoginPage').then(m => ({ default: m.LoginPage })));
+const DashboardPage = lazy(() => import('./pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
+const CoursesPage = lazy(() => import('./pages/CoursesPage').then(m => ({ default: m.CoursesPage })));
+const CourseDetailPage = lazy(() => import('./pages/CourseDetailPage').then(m => ({ default: m.CourseDetailPage })));
+const GoalsPage = lazy(() => import('./pages/GoalsPage').then(m => ({ default: m.GoalsPage })));
+const StatsPage = lazy(() => import('./pages/StatsPage').then(m => ({ default: m.StatsPage })));
+const StudyPage = lazy(() => import('./pages/StudyPage').then(m => ({ default: m.StudyPage })));
+const CalendarPage = lazy(() => import('./pages/CalendarPage').then(m => ({ default: m.CalendarPage })));
+const SettingsPage = lazy(() => import('./pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -37,10 +40,18 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+// Loading fallback for lazy routes
+const PageLoadingFallback = () => (
+  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+    <LoadingSpinner size={60} message="Načítám stránku..." />
+  </Box>
+);
+
 // Routes inside Layout
 const AppRoutes = () => {
   return (
-    <Routes>
+    <Suspense fallback={<PageLoadingFallback />}>
+      <Routes>
       <Route
         path="/dashboard"
         element={
@@ -124,6 +135,7 @@ const AppRoutes = () => {
       <Route path="/" element={<LoginPage />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
+    </Suspense>
   );
 };
 
