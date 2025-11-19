@@ -15,6 +15,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { NotificationSettings } from '../components/settings/NotificationSettings';
 import { ProfileSettings } from '../components/settings/ProfileSettings';
 import { DataManagement } from '../components/settings/DataManagement';
+import { PWASettings } from '../components/settings/PWASettings';
 
 export const SettingsPage = () => {
   const { profile, signOut } = useAuth();
@@ -70,6 +71,9 @@ export const SettingsPage = () => {
 
         {/* Profil */}
         <ProfileSettings />
+
+        {/* PWA & Offline */}
+        <PWASettings />
 
         {/* Data Management */}
         <DataManagement />

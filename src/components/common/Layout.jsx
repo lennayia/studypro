@@ -38,6 +38,7 @@ import { HelpButton } from './HelpButton';
 import { GlobalSearch } from './GlobalSearch';
 import { KeyboardShortcutsModal } from './KeyboardShortcutsModal';
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
+import { OnlineStatusIndicator } from './OnlineStatusIndicator';
 
 const drawerWidth = 260;
 
@@ -237,7 +238,12 @@ export const Layout = ({ children }) => {
           {/* Global Search */}
           <GlobalSearch />
 
-          <Box sx={{ width: 16 }} /> {/* Spacer */}
+          <Box sx={{ width: 12 }} /> {/* Spacer */}
+
+          {/* Online/Offline Status */}
+          <OnlineStatusIndicator />
+
+          <Box sx={{ width: 12 }} /> {/* Spacer */}
 
           <IconButton onClick={handleProfileMenuOpen}>
             <Avatar src={profile?.avatar_url} sx={{ width: 36, height: 36 }}>

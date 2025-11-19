@@ -13,6 +13,7 @@ import { Layout } from './components/common/Layout';
 import { LoadingSpinner, ErrorBoundary } from '../shared/src/components/common';
 import { NotificationProvider } from '../shared/src/context/NotificationContext';
 import { queryClient } from './lib/queryClient';
+import { PWAInstallPrompt } from './components/PWAInstallPrompt';
 
 // Lazy load pages for better performance
 const LoginPage = lazy(() => import('./pages/LoginPage').then(m => ({ default: m.LoginPage })));
@@ -190,6 +191,9 @@ function App() {
             },
           }}
         />
+
+        {/* PWA Install Prompt */}
+        <PWAInstallPrompt />
       </QueryClientProvider>
     </ErrorBoundary>
   );
