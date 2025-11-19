@@ -316,6 +316,7 @@ export const GamificationProvider = ({ children }) => {
     updateGoal,
     deleteGoal,
     loadGamificationData,
+    refreshGamification: loadGamificationData, // Alias for hook compatibility
     // 🔊 Export sound feedback hooks
     playClick,
     playSuccess,

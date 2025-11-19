@@ -13,6 +13,8 @@ import { Moon, Sun } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { NotificationSettings } from '../components/settings/NotificationSettings';
+import { ProfileSettings } from '../components/settings/ProfileSettings';
+import { DataManagement } from '../components/settings/DataManagement';
 
 export const SettingsPage = () => {
   const { profile, signOut } = useAuth();
@@ -67,57 +69,20 @@ export const SettingsPage = () => {
         <NotificationSettings />
 
         {/* Profil */}
+        <ProfileSettings />
+
+        {/* Data Management */}
+        <DataManagement />
+
+        {/* Odhlášení */}
         <Card sx={{ borderRadius: 4 }}>
           <CardContent>
             <Typography variant="h6" sx={{ mb: 3 }}>
-              Profil
-            </Typography>
-
-            <Stack spacing={2}>
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Jméno
-                </Typography>
-                <Typography variant="body1">{profile?.full_name}</Typography>
-              </Box>
-
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Email
-                </Typography>
-                <Typography variant="body1">{profile?.email}</Typography>
-              </Box>
-
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Celkem bodů
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 600, color: 'primary.main' }}>
-                  {profile?.total_points || 0}
-                </Typography>
-              </Box>
-
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Aktuální streak
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 600, color: 'warning.main' }}>
-                  {profile?.current_streak || 0} dní 🔥
-                </Typography>
-              </Box>
-            </Stack>
-          </CardContent>
-        </Card>
-
-        {/* Účet */}
-        <Card sx={{ borderRadius: 4 }}>
-          <CardContent>
-            <Typography variant="h6" sx={{ mb: 3 }}>
-              Účet
-            </Typography>
-
-            <Button variant="outlined" color="error" onClick={signOut}>
               Odhlásit se
+            </Typography>
+
+            <Button variant="outlined" color="error" onClick={signOut} size="large">
+              Odhlásit se z aplikace
             </Button>
           </CardContent>
         </Card>

@@ -10,10 +10,11 @@ import {
   MenuItem,
   Chip,
 } from '@mui/material';
-import { Plus, Edit, Trash2, FileText, Link as LinkIcon, BookMarked } from 'lucide-react';
+import { Plus, Edit, Trash2, FileText, Link as LinkIcon, BookMarked, Tag } from 'lucide-react';
 import { supabase } from '../../utils/supabase';
 import { LoadingSpinner, EmptyState } from '../../../shared/src/components/common';
 import { formatDate } from '../../utils/helpers';
+import { RichTextEditor, MarkdownPreview } from '../notes/RichTextEditor';
 
 const NOTE_TYPES = [
   { value: 'general', label: 'Obecné', icon: FileText, color: '#6366f1' },
@@ -194,15 +195,13 @@ export const CourseNotes = ({ courseId }) => {
               ))}
             </TextField>
 
-            <TextField
-              fullWidth
-              multiline
-              rows={4}
-              placeholder="Napiš svou poznámku..."
+            <RichTextEditor
               value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-              sx={{ mb: 2 }}
+              onChange={(value) => setFormData({ ...formData, content: value })}
+              placeholder="Napiš svou poznámku s Markdown podporou..."
+              minHeight={200}
             />
+            <Box sx={{ height: 16 }} />
 
             <Box sx={{ display: 'flex', gap: 1 }}>
               <Button variant="contained" onClick={handleSubmit}>
@@ -254,16 +253,9 @@ export const CourseNotes = ({ courseId }) => {
                     </Box>
                   </Box>
 
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      whiteSpace: 'pre-wrap',
-                      wordBreak: 'break-word',
-                      mb: 2,
-                    }}
-                  >
-                    {note.content}
-                  </Typography>
+                  <Box sx={{ mb: 2 }}>
+                    <MarkdownPreview content={note.content} />
+                  </Box>
 
                   <Typography variant="caption" color="text.secondary">
                     {formatDate(note.created_at)}
