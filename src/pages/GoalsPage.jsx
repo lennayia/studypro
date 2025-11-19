@@ -1,23 +1,61 @@
-import { Box, Typography, Grid, Card, CardContent, Chip, LinearProgress } from '@mui/material';
+import { useState } from 'react';
+import { Box, Typography, Grid, Card, CardContent, Chip, LinearProgress, Button, IconButton } from '@mui/material';
 import {
   GoalsPageIcon,
   StarDisplayIcon,
   AchievementsSectionIcon,
   GoalsSectionIcon,
+  AddButtonIcon,
+  EditActionIcon,
+  DeleteActionIcon,
 } from '../../shared/src/components/icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
 import { LoadingSpinner } from '../../shared/src/components/common';
-import { getLevelFromPoints, getStreakEmoji } from '../utils/helpers';
+import { GoalForm } from '../components/goals/GoalForm';
+import { getLevelFromPoints, getStreakEmoji, formatDate } from '../utils/helpers';
 
 export const GoalsPage = () => {
   const { profile } = useAuth();
-  const { achievements, userAchievements, goals, loading } = useGamification();
+  const { achievements, userAchievements, goals, loading, createGoal, updateGoal, deleteGoal } = useGamification();
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingGoal, setEditingGoal] = useState(null);
 
   if (loading) return <LoadingSpinner size={60} message="Načítám úspěchy..." />;
 
   const level = getLevelFromPoints(profile?.total_points || 0);
   const unlockedAchievementIds = new Set(userAchievements.map((ua) => ua.achievement_id));
+
+  const handleCreateGoal = async (data) => {
+    const result = await createGoal(data);
+    if (result.success) {
+      setFormOpen(false);
+    }
+  };
+
+  const handleUpdateGoal = async (data) => {
+    const result = await updateGoal(editingGoal.id, data);
+    if (result.success) {
+      setFormOpen(false);
+      setEditingGoal(null);
+    }
+  };
+
+  const handleDeleteGoal = async (goal) => {
+    if (window.confirm(`Opravdu chceš smazat cíl "${goal.title}"?`)) {
+      await deleteGoal(goal.id);
+    }
+  };
+
+  const handleEdit = (goal) => {
+    setEditingGoal(goal);
+    setFormOpen(true);
+  };
+
+  const handleCloseForm = () => {
+    setFormOpen(false);
+    setEditingGoal(null);
+  };
 
   return (
     <Box>
@@ -134,11 +172,20 @@ export const GoalsPage = () => {
 
       {/* Goals */}
       <Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
-          <GoalsSectionIcon />
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            Moje cíle
-          </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <GoalsSectionIcon />
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+              Moje cíle
+            </Typography>
+          </Box>
+          <Button
+            variant="contained"
+            startIcon={<AddButtonIcon />}
+            onClick={() => setFormOpen(true)}
+          >
+            Přidat cíl
+          </Button>
         </Box>
 
         {goals.length > 0 ? (
@@ -152,9 +199,19 @@ export const GoalsPage = () => {
                 <Grid item xs={12} md={6} key={goal.id}>
                   <Card>
                     <CardContent>
-                      <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
-                        {goal.title}
-                      </Typography>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 600, flex: 1 }}>
+                          {goal.title}
+                        </Typography>
+                        <Box>
+                          <IconButton size="small" onClick={() => handleEdit(goal)}>
+                            <EditActionIcon />
+                          </IconButton>
+                          <IconButton size="small" onClick={() => handleDeleteGoal(goal)}>
+                            <DeleteActionIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
 
                       {goal.description && (
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -168,7 +225,7 @@ export const GoalsPage = () => {
                             Pokrok
                           </Typography>
                           <Typography variant="caption" fontWeight={600}>
-                            {goal.current_value} / {goal.target_value} {goal.unit}
+                            {goal.current_value} / {goal.target_value}
                           </Typography>
                         </Box>
 
@@ -179,20 +236,19 @@ export const GoalsPage = () => {
                         />
                       </Box>
 
-                      {goal.deadline && (
-                        <Typography variant="caption" color="text.secondary">
-                          Deadline: {new Date(goal.deadline).toLocaleDateString('cs-CZ')}
-                        </Typography>
-                      )}
+                      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
+                        {goal.deadline && (
+                          <Typography variant="caption" color="text.secondary">
+                            Deadline: {formatDate(goal.deadline)}
+                          </Typography>
+                        )}
 
-                      {goal.is_completed && (
                         <Chip
                           size="small"
-                          label="✓ Splněno"
-                          color="success"
-                          sx={{ mt: 1 }}
+                          label={goal.status === 'active' ? 'Aktivní' : goal.status === 'completed' ? 'Dokončeno' : 'Zrušeno'}
+                          color={goal.status === 'active' ? 'primary' : goal.status === 'completed' ? 'success' : 'default'}
                         />
-                      )}
+                      </Box>
                     </CardContent>
                   </Card>
                 </Grid>
@@ -202,16 +258,31 @@ export const GoalsPage = () => {
         ) : (
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 6 }}>
-              <Typography variant="h6" color="text.secondary">
+              <Typography variant="h6" color="text.secondary" gutterBottom>
                 Zatím žádné cíle
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 Přidej si studijní cíle a motivuj se k jejich splnění!
               </Typography>
+              <Button
+                variant="contained"
+                startIcon={<AddButtonIcon />}
+                onClick={() => setFormOpen(true)}
+              >
+                Přidat první cíl
+              </Button>
             </CardContent>
           </Card>
         )}
       </Box>
+
+      {/* Goal Form Dialog */}
+      <GoalForm
+        open={formOpen}
+        onClose={handleCloseForm}
+        onSubmit={editingGoal ? handleUpdateGoal : handleCreateGoal}
+        initialData={editingGoal}
+      />
     </Box>
   );
 };
