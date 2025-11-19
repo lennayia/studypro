@@ -10,21 +10,21 @@
 
 | Kategorie | Dokončeno | Probíhá | Plánováno | Celkem |
 |-----------|-----------|---------|-----------|--------|
-| **Základní funkce** | 8 | 0 | 2 | 10 |
+| **Základní funkce** | 10 | 0 | 0 | 10 |
 | **Rozšířené funkce** | 0 | 0 | 8 | 8 |
 | **UI/UX vylepšení** | 1 | 0 | 6 | 7 |
 | **Performance** | 0 | 0 | 5 | 5 |
 | **Testing** | 0 | 0 | 4 | 4 |
-| **Dokumentace** | 2 | 0 | 1 | 3 |
-| **CELKEM** | **11** | **0** | **26** | **37** |
+| **Dokumentace** | 3 | 0 | 0 | 3 |
+| **CELKEM** | **14** | **0** | **23** | **37** |
 
-**Progress:** ███░░░░░░░ 29.7%
+**Progress:** █████░░░░░ 37.8%
 
 ---
 
-## ✅ Dokončeno (11)
+## ✅ Dokončeno (14)
 
-### Základní funkce
+### Základní funkce (10/10 = 100%)
 - ✅ **Autentizace** - Google OAuth přes Supabase
 - ✅ **Správa kurzů** - CRUD operace (Create, Read, Update, Delete)
 - ✅ **Dashboard** - Přehled pokroku, aktivní kurzy, statistiky
@@ -33,13 +33,16 @@
 - ✅ **Kontexty** - AuthContext, CourseContext, GamificationContext
 - ✅ **Responsive layout** - Desktop + mobile navigace
 - ✅ **Gamifikace (read-only)** - Zobrazení achievements, streaks, bodů
+- ✅ **Detail kurzu** - CourseDetailPage s lekcemi a poznámkami (1.1)
+- ✅ **CRUD pro Goals** - GoalForm a plná správa cílů (1.2)
 
 ### UI/UX
 - ✅ **Modulární systém ikon** - Centralizované barvy a velikosti
 
-### Dokumentace
+### Dokumentace (3/3 = 100%)
 - ✅ **DOCUMENTATION.md** - Kompletní dokumentace projektu
 - ✅ **MASTER_TODO.md** - Master TODO list
+- ✅ **CONTEXT_FOR_NEXT_SESSION.md** - Kontext pro další session
 
 ---
 
@@ -49,47 +52,9 @@ _Momentálně nejsou žádné rozpracované úkoly._
 
 ---
 
-## 📝 Plánováno (26)
+## 📝 Plánováno (23)
 
 ### 🎯 Priorita 1 - CRITICAL (nutné pro produkci)
-
-#### 1.1 Detail kurzu
-**Popis:** Stránka s detailem kurzu, zobrazení lekcí, pokroku, poznámek
-
-**Features:**
-- Zobrazení všech informací o kurzu
-- Seznam lekcí s checkboxy
-- Progress bar celkového pokroku
-- Edit inline (název, popis)
-- Přidání/úprava poznámek
-- Timeline studijních sezení
-
-**Soubory:**
-- `src/pages/CourseDetailPage.jsx` (nový)
-- `src/components/courses/LessonList.jsx` (nový)
-- `src/components/courses/CourseNotes.jsx` (nový)
-
-**Odhadovaná práce:** 4-6 hodin
-
----
-
-#### 1.2 CRUD operace pro Goals
-**Popis:** Umožnit vytváření, editaci a mazání studijních cílů
-
-**Features:**
-- Formulář pro vytvoření cíle
-- Dialog pro editaci cíle
-- Smazání cíle s potvrzením
-- Validace (deadline v budoucnosti, target > 0)
-- Auto-update current_value při změně pokroku
-
-**Soubory:**
-- `src/components/goals/GoalForm.jsx` (nový)
-- `src/contexts/GamificationContext.jsx` (update)
-
-**Odhadovaná práce:** 2-3 hodiny
-
----
 
 #### 1.3 Error handling & loading states
 **Popis:** Jednotné zpracování chyb a loading stavů
