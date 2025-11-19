@@ -34,6 +34,7 @@ import { Flame, Star, Timer, Calendar as CalendarIcon } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getStreakEmoji, getLevelFromPoints } from '../../utils/helpers';
+import { HelpButton } from './HelpButton';
 
 const drawerWidth = 260;
 
@@ -311,6 +312,9 @@ export const Layout = ({ children }) => {
       >
         {children}
       </Box>
+
+      {/* Floating Help Button */}
+      <HelpButton />
     </Box>
   );
 };

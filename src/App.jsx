@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { CssBaseline, Box } from '@mui/material';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CourseProvider } from './contexts/CourseContext';
@@ -9,6 +11,7 @@ import { StudySessionProvider } from './contexts/StudySessionContext';
 import { Layout } from './components/common/Layout';
 import { LoadingSpinner, ErrorBoundary } from '../shared/src/components/common';
 import { NotificationProvider } from '../shared/src/context/NotificationContext';
+import { queryClient } from './lib/queryClient';
 
 // Lazy load pages for better performance
 const LoginPage = lazy(() => import('./pages/LoginPage').then(m => ({ default: m.LoginPage })));
@@ -20,6 +23,7 @@ const StatsPage = lazy(() => import('./pages/StatsPage').then(m => ({ default: m
 const StudyPage = lazy(() => import('./pages/StudyPage').then(m => ({ default: m.StudyPage })));
 const CalendarPage = lazy(() => import('./pages/CalendarPage').then(m => ({ default: m.CalendarPage })));
 const SettingsPage = lazy(() => import('./pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const GamificationPage = lazy(() => import('./pages/GamificationPage').then(m => ({ default: m.GamificationPage })));
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -123,6 +127,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/gamification"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <GamificationPage />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/settings"
         element={
           <ProtectedRoute>
@@ -142,22 +156,26 @@ const AppRoutes = () => {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <CssBaseline />
-        <NotificationProvider>
-          <BrowserRouter>
-            <AuthProvider>
-              <CourseProvider>
-                <GamificationProvider>
-                  <StudySessionProvider>
-                    <AppRoutes />
-                  </StudySessionProvider>
-                </GamificationProvider>
-              </CourseProvider>
-            </AuthProvider>
-          </BrowserRouter>
-        </NotificationProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <CssBaseline />
+          <NotificationProvider>
+            <BrowserRouter>
+              <AuthProvider>
+                <CourseProvider>
+                  <GamificationProvider>
+                    <StudySessionProvider>
+                      <AppRoutes />
+                    </StudySessionProvider>
+                  </GamificationProvider>
+                </CourseProvider>
+              </AuthProvider>
+            </BrowserRouter>
+          </NotificationProvider>
+        </ThemeProvider>
+        {/* React Query Devtools - only in development */}
+        {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }
