@@ -4,24 +4,27 @@ import {
   Typography,
   Button,
   Grid,
-  TextField,
-  MenuItem,
-  InputAdornment,
   Fab,
+  Dialog,
+  DialogContent,
+  Stack,
 } from '@mui/material';
+import { GripVertical, FileUp } from 'lucide-react';
 import {
   CoursesPageIcon,
   AddButtonIcon,
-  SearchButtonIcon,
   EmptyGraduationIcon,
   EmptySearchIcon,
 } from '../../shared/src/components/icons';
 import { useCourses } from '../contexts/CourseContext';
 import { CourseCard } from '../components/courses/CourseCard';
 import { CourseForm } from '../components/courses/CourseForm';
+import { CourseFilters } from '../components/courses/CourseFilters';
+import { DraggableCourseList } from '../components/courses/DraggableCourseList';
+import { CSVImport } from '../components/courses/CSVImport';
 import { LoadingSpinner, EmptyState } from '../../shared/src/components/common';
 import { useNavigate } from 'react-router-dom';
-import { filterCourses, sortCourses } from '../utils/helpers';
+import { applyFilters } from '../utils/courseUtils';
 
 export const CoursesPage = () => {
   const navigate = useNavigate();
@@ -29,13 +32,16 @@ export const CoursesPage = () => {
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
+  const [priorityDialogOpen, setPriorityDialogOpen] = useState(false);
+  const [csvImportOpen, setCsvImportOpen] = useState(false);
   const [filters, setFilters] = useState({
     search: '',
-    status: 'all',
-    category: 'all',
-    type: 'all',
+    category: '',
+    status: '',
+    priority: '',
+    sortBy: 'created_at',
+    sortOrder: 'desc',
   });
-  const [sortBy, setSortBy] = useState('priority');
 
   const handleCreateCourse = async (data) => {
     const result = await createCourse(data);
@@ -68,12 +74,24 @@ export const CoursesPage = () => {
     setEditingCourse(null);
   };
 
+  const handlePriorityReorder = async (reorderedCourses) => {
+    // Update each course's priority in the database
+    for (const course of reorderedCourses) {
+      await updateCourse(course.id, { priority: course.priority });
+    }
+  };
+
+  const handleCSVImport = async (courses) => {
+    // Import each course
+    for (const courseData of courses) {
+      await createCourse(courseData);
+    }
+  };
+
   if (loading) return <LoadingSpinner size={60} message="Načítám kurzy..." />;
 
   // Filtrování a řazení
-  const filteredCourses = sortCourses(filterCourses(courses, filters), sortBy);
-
-  const categories = [...new Set(courses.map((c) => c.category).filter(Boolean))];
+  const filteredCourses = applyFilters(courses, filters);
 
   return (
     <Box>
@@ -91,101 +109,38 @@ export const CoursesPage = () => {
           </Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          size="large"
-          startIcon={<AddButtonIcon />}
-          onClick={() => setFormOpen(true)}
-          sx={{ display: { xs: 'none', sm: 'flex' } }}
-        >
-          Přidat kurz
-        </Button>
+        <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
+          <Button
+            variant="outlined"
+            size="large"
+            startIcon={<FileUp size={20} />}
+            onClick={() => setCsvImportOpen(true)}
+          >
+            Import CSV
+          </Button>
+          <Button
+            variant="outlined"
+            size="large"
+            startIcon={<GripVertical size={20} />}
+            onClick={() => setPriorityDialogOpen(true)}
+            disabled={courses.length === 0}
+          >
+            Uspořádat priority
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            startIcon={<AddButtonIcon />}
+            onClick={() => setFormOpen(true)}
+          >
+            Přidat kurz
+          </Button>
+        </Stack>
       </Box>
 
       {/* Filters */}
       {courses.length > 0 && (
-        <Grid container spacing={2} sx={{ mb: 4 }}>
-          <Grid item xs={12} sm={6} md={4}>
-            <TextField
-              fullWidth
-              placeholder="Hledat kurz..."
-              value={filters.search}
-              onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchButtonIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-
-          <Grid item xs={6} sm={3} md={2}>
-            <TextField
-              fullWidth
-              select
-              label="Status"
-              value={filters.status}
-              onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-            >
-              <MenuItem value="all">Všechny</MenuItem>
-              <MenuItem value="not_started">Nezačato</MenuItem>
-              <MenuItem value="in_progress">Probíhá</MenuItem>
-              <MenuItem value="completed">Dokončeno</MenuItem>
-              <MenuItem value="paused">Pozastaveno</MenuItem>
-            </TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3} md={2}>
-            <TextField
-              fullWidth
-              select
-              label="Kategorie"
-              value={filters.category}
-              onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-            >
-              <MenuItem value="all">Všechny</MenuItem>
-              {categories.map((cat) => (
-                <MenuItem key={cat} value={cat}>
-                  {cat}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={6} md={2}>
-            <TextField
-              fullWidth
-              select
-              label="Typ"
-              value={filters.type}
-              onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-            >
-              <MenuItem value="all">Všechny</MenuItem>
-              <MenuItem value="paid">Placené</MenuItem>
-              <MenuItem value="free">Zdarma</MenuItem>
-              <MenuItem value="school">Škola</MenuItem>
-              <MenuItem value="workshop">Workshop</MenuItem>
-            </TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={6} md={2}>
-            <TextField
-              fullWidth
-              select
-              label="Řadit podle"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <MenuItem value="priority">Priority</MenuItem>
-              <MenuItem value="progress">Pokroku</MenuItem>
-              <MenuItem value="deadline">Deadline</MenuItem>
-              <MenuItem value="recent">Nejnovější</MenuItem>
-              <MenuItem value="alphabetical">A-Z</MenuItem>
-            </TextField>
-          </Grid>
-        </Grid>
+        <CourseFilters onFilterChange={setFilters} courses={courses} />
       )}
 
       {/* Courses Grid */}
@@ -239,6 +194,37 @@ export const CoursesPage = () => {
       >
         <AddButtonIcon size={24} />
       </Fab>
+
+      {/* Priority Reorder Dialog */}
+      <Dialog
+        open={priorityDialogOpen}
+        onClose={() => setPriorityDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogContent sx={{ p: 3 }}>
+          <DraggableCourseList
+            courses={courses.slice().sort((a, b) => (a.priority || 999) - (b.priority || 999))}
+            onReorder={handlePriorityReorder}
+            onClose={() => setPriorityDialogOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* CSV Import Dialog */}
+      <Dialog
+        open={csvImportOpen}
+        onClose={() => setCsvImportOpen(false)}
+        maxWidth="lg"
+        fullWidth
+      >
+        <DialogContent sx={{ p: 3 }}>
+          <CSVImport
+            onImport={handleCSVImport}
+            onClose={() => setCsvImportOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

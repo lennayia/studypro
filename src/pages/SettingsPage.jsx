@@ -12,6 +12,7 @@ import {
 import { Moon, Sun } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { NotificationSettings } from '../components/settings/NotificationSettings';
 
 export const SettingsPage = () => {
   const { profile, signOut } = useAuth();
@@ -25,7 +26,7 @@ export const SettingsPage = () => {
 
       <Stack spacing={3}>
         {/* Vzhled */}
-        <Card>
+        <Card sx={{ borderRadius: 4 }}>
           <CardContent>
             <Typography variant="h6" sx={{ mb: 3 }}>
               Vzhled
@@ -62,8 +63,11 @@ export const SettingsPage = () => {
           </CardContent>
         </Card>
 
+        {/* Notifikace */}
+        <NotificationSettings />
+
         {/* Profil */}
-        <Card>
+        <Card sx={{ borderRadius: 4 }}>
           <CardContent>
             <Typography variant="h6" sx={{ mb: 3 }}>
               Profil
@@ -106,7 +110,7 @@ export const SettingsPage = () => {
         </Card>
 
         {/* Účet */}
-        <Card>
+        <Card sx={{ borderRadius: 4 }}>
           <CardContent>
             <Typography variant="h6" sx={{ mb: 3 }}>
               Účet
