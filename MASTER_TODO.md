@@ -1,8 +1,8 @@
 # 📋 StudyPro - Master TODO List
 
-**Verze:** 1.0.0
+**Verze:** 1.1.0
 **Datum:** 18.11.2025
-**Poslední update:** 19.11.2025
+**Poslední update:** 19.11.2025 (Session #6)
 
 ---
 
@@ -11,18 +11,18 @@
 | Kategorie | Dokončeno | Probíhá | Plánováno | Celkem |
 |-----------|-----------|---------|-----------|--------|
 | **Základní funkce** | 10 | 0 | 0 | 10 |
-| **Rozšířené funkce** | 0 | 0 | 7 | 7 |
-| **UI/UX vylepšení** | 2 | 0 | 5 | 7 |
-| **Performance** | 0 | 0 | 5 | 5 |
+| **Rozšířené funkce** | 2 | 0 | 5 | 7 |
+| **UI/UX vylepšení** | 3 | 0 | 4 | 7 |
+| **Performance** | 1 | 0 | 4 | 5 |
 | **Testing** | 0 | 0 | 4 | 4 |
 | **Dokumentace** | 3 | 0 | 0 | 3 |
-| **CELKEM** | **15** | **0** | **21** | **36** |
+| **CELKEM** | **19** | **0** | **17** | **36** |
 
-**Progress:** █████░░░░░ 41.7%
+**Progress:** ██████████ 52.8%
 
 ---
 
-## ✅ Dokončeno (15)
+## ✅ Dokončeno (19)
 
 ### Základní funkce (10/10 = 100%)
 - ✅ **Autentizace** - Google OAuth přes Supabase
@@ -30,15 +30,23 @@
 - ✅ **Dashboard** - Přehled pokroku, aktivní kurzy, statistiky
 - ✅ **Goals page** - Zobrazení achievements a cílů
 - ✅ **Database schema** - 8 tabulek s RLS
-- ✅ **Kontexty** - AuthContext, CourseContext, GamificationContext
+- ✅ **Kontexty** - AuthContext, CourseContext, GamificationContext, StudySessionContext, ThemeContext
 - ✅ **Responsive layout** - Desktop + mobile navigace
 - ✅ **Gamifikace (read-only)** - Zobrazení achievements, streaks, bodů
 - ✅ **Detail kurzu** - CourseDetailPage s lekcemi a poznámkami (1.1)
 - ✅ **CRUD pro Goals** - GoalForm a plná správa cílů (1.2)
 
-### UI/UX (2/7 = 28.6%)
+### Rozšířené funkce (2/7 = 28.6%)
+- ✅ **Study session tracking** - Timer, Pomodoro (25/5 min), auto points, session history (2.3)
+- ✅ **Kalendář s deadliny** - Měsíční view, urgency highlighting, upcoming/overdue lists (2.1)
+
+### UI/UX (3/7 = 42.9%)
 - ✅ **Modulární systém ikon** - Centralizované barvy a velikosti
 - ✅ **Dark mode** - ThemeContext, light/dark themes, toggle v Settings (2.5)
+- ✅ **Error handling & loading** - ErrorBoundary, 7 skeletons, offline detect, retry utils (1.3)
+
+### Performance (1/5 = 20%)
+- ✅ **Retry mechanismus** - retry(), retryWithCondition(), withRetry() s exponential backoff
 
 ### Dokumentace (3/3 = 100%)
 - ✅ **DOCUMENTATION.md** - Kompletní dokumentace projektu
@@ -53,50 +61,15 @@ _Momentálně nejsou žádné rozpracované úkoly._
 
 ---
 
-## 📝 Plánováno (21)
+## 📝 Plánováno (17)
 
 ### 🎯 Priorita 1 - CRITICAL (nutné pro produkci)
 
-#### 1.3 Error handling & loading states
-**Popis:** Jednotné zpracování chyb a loading stavů
-
-**Features:**
-- Error boundaries
-- Toast notifications pro úspěch/chybu
-- Loading skeletony místo spinnerů
-- Retry mechanismus pro failed requests
-- Offline detection
-
-**Soubory:**
-- `src/components/common/ErrorBoundary.jsx` (nový)
-- `src/components/common/Toast.jsx` (nový)
-- `src/components/common/Skeleton.jsx` (nový)
-
-**Odhadovaná práce:** 3-4 hodiny
+_Všechny Priorita 1 úkoly dokončeny! 🎉_
 
 ---
 
 ### 🎨 Priorita 2 - HIGH (důležité pro UX)
-
-#### 2.1 Kalendář s deadliny
-**Popis:** Kalendářové zobrazení kurzů a deadlinů
-
-**Features:**
-- Měsíční/týdenní pohled
-- Zvýraznění deadlinů
-- Click na den → detail událostí
-- Export do Google Calendar
-- Notifikace před deadlinem
-
-**Soubory:**
-- `src/pages/CalendarPage.jsx` (nový)
-- `src/components/calendar/CalendarView.jsx` (nový)
-
-**Knihovny:** react-big-calendar nebo date-fns + custom UI
-
-**Odhadovaná práce:** 5-7 hodin
-
----
 
 #### 2.2 Pokročilé statistiky
 **Popis:** Detailní statistiky a grafy pokroku
@@ -119,27 +92,7 @@ _Momentálně nejsou žádné rozpracované úkoly._
 
 ---
 
-#### 2.3 Study session tracking
-**Popis:** Ruční/automatické logování studijních sezení
-
-**Features:**
-- Timer pro studijní sezení
-- Pomodoro technika (25/5 min)
-- Manuální přidání sezení
-- Přiřazení k kurzu
-- Poznámky k sezení
-- Automatické body za sezení
-
-**Soubory:**
-- `src/components/dashboard/StudyTimer.jsx` (nový)
-- `src/components/dashboard/SessionForm.jsx` (nový)
-- `src/contexts/GamificationContext.jsx` (update)
-
-**Odhadovaná práce:** 4-5 hodin
-
----
-
-#### 2.4 Notifikace
+#### 2.3 Notifikace
 **Popis:** Push notifikace pro deadliny a cíle
 
 **Features:**
@@ -159,7 +112,7 @@ _Momentálně nejsou žádné rozpracované úkoly._
 
 ---
 
-#### 2.5 Profil a nastavení
+#### 2.4 Profil a nastavení
 **Popis:** Kompletní stránka nastavení uživatele
 
 **Features:**

@@ -30,7 +30,7 @@ import {
   LogoutNavIcon,
   MenuNavIcon,
 } from '../../../shared/src/components/icons';
-import { Flame, Star } from 'lucide-react';
+import { Flame, Star, Timer, Calendar as CalendarIcon } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getStreakEmoji, getLevelFromPoints } from '../../utils/helpers';
@@ -67,7 +67,9 @@ export const Layout = ({ children }) => {
   const menuItems = [
     { text: 'Dashboard', icon: <HomeNavIcon />, path: '/dashboard' },
     { text: 'Moje kurzy', icon: <CoursesNavIcon />, path: '/courses' },
+    { text: 'Kalendář', icon: <CalendarIcon size={20} />, path: '/calendar' },
     { text: 'Cíle & Úspěchy', icon: <GoalsNavIcon />, path: '/goals' },
+    { text: 'Study Timer', icon: <Timer size={20} />, path: '/study' },
     { text: 'Statistiky', icon: <StatsNavIcon />, path: '/stats' },
   ];
 

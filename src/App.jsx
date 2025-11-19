@@ -4,6 +4,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CourseProvider } from './contexts/CourseContext';
 import { GamificationProvider } from './contexts/GamificationContext';
+import { StudySessionProvider } from './contexts/StudySessionContext';
 import { Layout } from './components/common/Layout';
 import { LoadingSpinner, ErrorBoundary } from '../shared/src/components/common';
 import { NotificationProvider } from '../shared/src/context/NotificationContext';
@@ -13,6 +14,8 @@ import { CoursesPage } from './pages/CoursesPage';
 import { CourseDetailPage } from './pages/CourseDetailPage';
 import { GoalsPage } from './pages/GoalsPage';
 import { StatsPage } from './pages/StatsPage';
+import { StudyPage } from './pages/StudyPage';
+import { CalendarPage } from './pages/CalendarPage';
 import { SettingsPage } from './pages/SettingsPage';
 
 // Protected Route wrapper
@@ -89,6 +92,26 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/study"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <StudyPage />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/calendar"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <CalendarPage />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/settings"
         element={
           <ProtectedRoute>
@@ -114,7 +137,9 @@ function App() {
             <AuthProvider>
               <CourseProvider>
                 <GamificationProvider>
-                  <AppRoutes />
+                  <StudySessionProvider>
+                    <AppRoutes />
+                  </StudySessionProvider>
                 </GamificationProvider>
               </CourseProvider>
             </AuthProvider>

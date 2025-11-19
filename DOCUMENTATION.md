@@ -1,7 +1,7 @@
 # 📚 StudyPro - Dokumentace
 
-**Verze:** 1.0.0
-**Datum:** 18.11.2025
+**Verze:** 1.1.0
+**Datum:** 19.11.2025
 **Status:** Beta Development
 
 ---
@@ -12,13 +12,16 @@
 2. [Architektura](#architektura)
 3. [Modulární design systém](#modulární-design-systém)
 4. [Dark Mode](#dark-mode)
-5. [Database schema](#database-schema)
-6. [Komponenty](#komponenty)
-7. [Stránky](#stránky)
-8. [Kontexty a stavy](#kontexty-a-stavy)
-9. [Instalace a spuštění](#instalace-a-spuštění)
-10. [Deployment](#deployment)
-11. [Best practices](#best-practices)
+5. [Error Handling & Loading States](#error-handling--loading-states)
+6. [Study Session Tracking](#study-session-tracking)
+7. [Kalendář s deadliny](#kalendář-s-deadliny)
+8. [Database schema](#database-schema)
+9. [Komponenty](#komponenty)
+10. [Stránky](#stránky)
+11. [Kontexty a stavy](#kontexty-a-stavy)
+12. [Instalace a spuštění](#instalace-a-spuštění)
+13. [Deployment](#deployment)
+14. [Best practices](#best-practices)
 
 ---
 
@@ -35,6 +38,9 @@
 - ✅ **Autentizace** - Google OAuth přes Supabase
 - ✅ **Modulární design** - Centralizovaný systém ikon a barev
 - ✅ **Dark Mode** - Tmavý režim s auto-detect a persistence
+- ✅ **Study Timer** - Pomodoro technika, automatické body
+- ✅ **Kalendář** - Vizualizace deadlinů, upomínky
+- ✅ **Error Handling** - Offline detection, retry mechanismus, skeletony
 
 ### Tech Stack
 
@@ -353,6 +359,197 @@ export const darkTheme = createTheme({
   },
 });
 ```
+
+---
+
+## ⚠️ Error Handling & Loading States
+
+StudyPro má robustní error handling systém pro lepší UX.
+
+### Komponenty
+
+**ErrorBoundary:**
+- Catches React errors a zobrazuje fallback UI
+- Development mode: ukazuje stack trace
+- Production mode: user-friendly error message
+- Actions: Reload page | Zpět na úvod
+
+**Loading Skeletons:**
+- `CourseCardSkeleton` - Pro course cards
+- `GoalCardSkeleton` - Pro goal cards
+- `StatsCardSkeleton` - Pro stats
+- `ListItemSkeleton` - Universal pro lists
+- `TableSkeleton` - Pro tabulky
+- `DashboardSkeleton` - Complex dashboard skeleton
+- `ProfileSkeleton` - Pro profil
+
+**Offline Detection:**
+- `useOffline()` hook - Detekuje online/offline status
+- `OfflineIndicator` - Banner když je app offline
+- Auto-detection při network změně
+
+**Retry Mechanism:**
+```javascript
+import { retry, retryWithCondition, withRetry } from '../utils/retry';
+
+// Basic retry (3 attempts, exponential backoff)
+const data = await retry(() => fetchData());
+
+// Retry with custom condition
+const data = await retryWithCondition(
+  () => fetchData(),
+  (error) => error.status >= 500,
+  { maxAttempts: 5 }
+);
+
+// Wrap function with retry
+const fetchWithRetry = withRetry(fetchData, { maxAttempts: 3 });
+```
+
+### Soubory
+
+- `shared/src/components/common/ErrorBoundary.jsx`
+- `shared/src/components/common/Skeleton.jsx`
+- `src/components/common/OfflineIndicator.jsx`
+- `src/hooks/useOffline.js`
+- `src/utils/retry.js`
+
+---
+
+## ⏱️ Study Session Tracking
+
+Timer pro sledování studijních sezení s Pomodoro technikou.
+
+### Features
+
+✅ **Study Timer** - Start/pause/stop tracking
+✅ **Pomodoro Mode** - Konfigurovatelné work/break intervaly (default: 25/5 min)
+✅ **Automatické body** - 1 bod za každých 5 minut studia
+✅ **Course tracking** - Volitelné propojení s konkrétním kurzem
+✅ **Session history** - Historie všech study sessions
+✅ **Stats** - Dnes/týden/celkem čas strávený studiem
+✅ **Sound notifications** - Zvuk při dokončení Pomodora
+
+### StudySessionContext API
+
+```javascript
+import { useStudySession } from '../contexts/StudySessionContext';
+
+const {
+  // State
+  activeSession,     // Current running session | null
+  sessions,          // All sessions (last 50)
+  timer,             // Current timer value (seconds)
+  isRunning,         // Is timer running?
+  isPaused,          // Is timer paused?
+
+  // Pomodoro
+  pomodoroMode,      // Is Pomodoro mode enabled?
+  isBreak,           // Is current interval a break?
+  completedPomodoros,// Count of completed Pomodoros
+  workDuration,      // Work interval duration (seconds)
+  breakDuration,     // Break interval duration (seconds)
+
+  // Actions
+  startSession,      // (courseId?, notes?) => Promise
+  endSession,        // (notes?) => Promise
+  pauseSession,      // () => void
+  resumeSession,     // () => void
+  togglePomodoroMode,// () => void
+  skipBreak,         // () => void
+
+  // Stats
+  getTodayStudyTime, // () => number (minutes)
+  getWeekStudyTime,  // () => number (minutes)
+
+  // Utils
+  formatTime,        // (seconds) => string ('HH:MM:SS')
+} = useStudySession();
+```
+
+### Usage Example
+
+```javascript
+// Start new session
+await startSession(courseId, 'React hooks');
+
+// Toggle Pomodoro mode (before starting)
+togglePomodoroMode();
+
+// Pause/Resume
+pauseSession();
+resumeSession();
+
+// End session
+await endSession('Completed 3 chapters');
+```
+
+### Database
+
+Sessions are stored in `study_sessions` table with:
+- `user_id`, `course_id` (nullable)
+- `start_time`, `end_time`
+- `duration_minutes` (auto-calculated)
+- `notes`
+
+Points are automatically awarded via `addPoints()` from GamificationContext.
+
+### Soubory
+
+- `src/contexts/StudySessionContext.jsx`
+- `src/components/study/StudyTimer.jsx`
+- `src/pages/StudyPage.jsx`
+
+---
+
+## 📅 Kalendář s deadliny
+
+Vizualizace deadlinů kurzů v kalendářním pohledu.
+
+### Features
+
+✅ **Měsíční pohled** - Grid layout s dny
+✅ **Deadline indicators** - Tečky na dnech s deadliny
+✅ **Urgency highlighting** - Červená pro deadliny do 3 dnů
+✅ **Today highlighting** - Zvýrazněný dnešní den
+✅ **Upcoming list** - Seznam nadcházejících deadlinů (7 dní)
+✅ **Overdue list** - Seznam prošlých deadlinů
+✅ **Date click** - Detail kurzů na vybraný den
+✅ **Navigation** - Předchozí/následující měsíc, "Dnes" button
+
+### CalendarView Component
+
+```jsx
+import { CalendarView } from '../components/calendar/CalendarView';
+
+<CalendarView
+  onDateClick={(date) => {
+    console.log('Clicked:', date);
+  }}
+/>
+```
+
+**Props:**
+- `onDateClick` - Callback when date is clicked
+
+**Features:**
+- Auto-loads courses with deadlines
+- Color coding by urgency
+- Responsive grid layout
+- Czech day names
+
+### CalendarPage
+
+Fullpage view s kalendářem + stats:
+- Nadcházející deadliny (7 dní)
+- Prošlé deadliny
+- Stats cards (celkem deadlinů, prošlé, nadcházející)
+- Dialog s detailem dne
+
+### Soubory
+
+- `src/components/calendar/CalendarView.jsx`
+- `src/pages/CalendarPage.jsx`
 
 ---
 

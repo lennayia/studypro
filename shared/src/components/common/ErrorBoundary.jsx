@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography, Button, Card, CardContent } from '@mui/material';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import BORDER_RADIUS from '@styles/borderRadius';
 
 /**
  * ErrorBoundary - Catches React errors and displays user-friendly fallback
@@ -68,7 +67,7 @@ const ErrorFallback = ({ error, onReset }) => {
 
   const handleGoHome = () => {
     onReset();
-    navigate('/coach/dashboard');
+    navigate('/');
   };
 
   const handleReload = () => {
@@ -93,7 +92,7 @@ const ErrorFallback = ({ error, onReset }) => {
         sx={{
           maxWidth: 600,
           width: '100%',
-          borderRadius: BORDER_RADIUS.card,
+          borderRadius: 4,
           boxShadow: (theme) =>
             theme.palette.mode === 'dark'
               ? '0 8px 32px rgba(0, 0, 0, 0.4)'
@@ -126,7 +125,7 @@ const ErrorFallback = ({ error, onReset }) => {
               sx={{
                 mb: 3,
                 p: 2,
-                borderRadius: BORDER_RADIUS.compact,
+                borderRadius: 2,
                 backgroundColor: (theme) =>
                   theme.palette.mode === 'dark'
                     ? 'rgba(255, 0, 0, 0.1)'
@@ -161,7 +160,7 @@ const ErrorFallback = ({ error, onReset }) => {
               sx={{
                 px: 3,
                 py: 1,
-                borderRadius: BORDER_RADIUS.compact,
+                borderRadius: 2,
                 fontWeight: 600,
                 textTransform: 'none',
               }}
@@ -175,7 +174,7 @@ const ErrorFallback = ({ error, onReset }) => {
               sx={{
                 px: 3,
                 py: 1,
-                borderRadius: BORDER_RADIUS.compact,
+                borderRadius: 2,
                 fontWeight: 600,
                 textTransform: 'none',
               }}
@@ -187,17 +186,7 @@ const ErrorFallback = ({ error, onReset }) => {
           {/* Contact info */}
           <Box mt={4}>
             <Typography variant="body2" color="text.secondary">
-              Pokud problém přetrvává, napiš nám prosím na
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 600,
-                color: 'primary.main',
-                mt: 0.5,
-              }}
-            >
-              beta@online-byznys.cz
+              Pokud problém přetrvává, zkus obnovit stránku nebo se vrátit na úvod.
             </Typography>
           </Box>
         </CardContent>

@@ -9,3 +9,4 @@ export { default as PhotoUpload } from './PhotoUpload.jsx';
 export { StatsCard } from './StatsCard.jsx';
 export { EmptyState } from './EmptyState.jsx';
 export { Icon } from './Icon.jsx';
+export * from './Skeleton.jsx';  // Named exports: CourseCardSkeleton, GoalCardSkeleton, etc.
