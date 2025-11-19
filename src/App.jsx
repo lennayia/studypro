@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, Box } from '@mui/material';
-import { theme } from './theme/theme';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CourseProvider } from './contexts/CourseContext';
 import { GamificationProvider } from './contexts/GamificationContext';
@@ -108,7 +107,7 @@ const AppRoutes = () => {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider>
         <CssBaseline />
         <NotificationProvider>
           <BrowserRouter>

@@ -2,7 +2,7 @@
 
 **Verze:** 1.0.0
 **Datum:** 18.11.2025
-**Poslední update:** 18.11.2025
+**Poslední update:** 19.11.2025
 
 ---
 
@@ -11,18 +11,18 @@
 | Kategorie | Dokončeno | Probíhá | Plánováno | Celkem |
 |-----------|-----------|---------|-----------|--------|
 | **Základní funkce** | 10 | 0 | 0 | 10 |
-| **Rozšířené funkce** | 0 | 0 | 8 | 8 |
-| **UI/UX vylepšení** | 1 | 0 | 6 | 7 |
+| **Rozšířené funkce** | 0 | 0 | 7 | 7 |
+| **UI/UX vylepšení** | 2 | 0 | 5 | 7 |
 | **Performance** | 0 | 0 | 5 | 5 |
 | **Testing** | 0 | 0 | 4 | 4 |
 | **Dokumentace** | 3 | 0 | 0 | 3 |
-| **CELKEM** | **14** | **0** | **23** | **37** |
+| **CELKEM** | **15** | **0** | **21** | **36** |
 
-**Progress:** █████░░░░░ 37.8%
+**Progress:** █████░░░░░ 41.7%
 
 ---
 
-## ✅ Dokončeno (14)
+## ✅ Dokončeno (15)
 
 ### Základní funkce (10/10 = 100%)
 - ✅ **Autentizace** - Google OAuth přes Supabase
@@ -36,8 +36,9 @@
 - ✅ **Detail kurzu** - CourseDetailPage s lekcemi a poznámkami (1.1)
 - ✅ **CRUD pro Goals** - GoalForm a plná správa cílů (1.2)
 
-### UI/UX
+### UI/UX (2/7 = 28.6%)
 - ✅ **Modulární systém ikon** - Centralizované barvy a velikosti
+- ✅ **Dark mode** - ThemeContext, light/dark themes, toggle v Settings (2.5)
 
 ### Dokumentace (3/3 = 100%)
 - ✅ **DOCUMENTATION.md** - Kompletní dokumentace projektu
@@ -52,7 +53,7 @@ _Momentálně nejsou žádné rozpracované úkoly._
 
 ---
 
-## 📝 Plánováno (23)
+## 📝 Plánováno (21)
 
 ### 🎯 Priorita 1 - CRITICAL (nutné pro produkci)
 
@@ -158,26 +159,7 @@ _Momentálně nejsou žádné rozpracované úkoly._
 
 ---
 
-#### 2.5 Dark mode
-**Popis:** Tmavý režim pro celou aplikaci
-
-**Features:**
-- Toggle v Settings
-- Persistence v localStorage
-- Custom MUI theme pro dark mode
-- Animovaný přechod
-- Auto-detect system preference
-
-**Soubory:**
-- `src/contexts/ThemeContext.jsx` (nový)
-- `src/theme/darkTheme.js` (nový)
-- `src/theme/lightTheme.js` (nový)
-
-**Odhadovaná práce:** 2-3 hodiny
-
----
-
-#### 2.6 Profil a nastavení
+#### 2.5 Profil a nastavení
 **Popis:** Kompletní stránka nastavení uživatele
 
 **Features:**
@@ -590,6 +572,6 @@ _Features které přišly během vývoje, ale nejsou ještě prioritizované_
 
 ---
 
-**Poslední update:** 18.11.2025
+**Poslední update:** 19.11.2025
 **Next review:** 25.11.2025
 **Version:** 1.0.0

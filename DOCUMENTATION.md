@@ -11,13 +11,14 @@
 1. [Přehled projektu](#přehled-projektu)
 2. [Architektura](#architektura)
 3. [Modulární design systém](#modulární-design-systém)
-4. [Database schema](#database-schema)
-5. [Komponenty](#komponenty)
-6. [Stránky](#stránky)
-7. [Kontexty a stavy](#kontexty-a-stavy)
-8. [Instalace a spuštění](#instalace-a-spuštění)
-9. [Deployment](#deployment)
-10. [Best practices](#best-practices)
+4. [Dark Mode](#dark-mode)
+5. [Database schema](#database-schema)
+6. [Komponenty](#komponenty)
+7. [Stránky](#stránky)
+8. [Kontexty a stavy](#kontexty-a-stavy)
+9. [Instalace a spuštění](#instalace-a-spuštění)
+10. [Deployment](#deployment)
+11. [Best practices](#best-practices)
 
 ---
 
@@ -33,6 +34,7 @@
 - ✅ **Dashboard** - Přehled pokroku, aktivní kurzy, statistiky
 - ✅ **Autentizace** - Google OAuth přes Supabase
 - ✅ **Modulární design** - Centralizovaný systém ikon a barev
+- ✅ **Dark Mode** - Tmavý režim s auto-detect a persistence
 
 ### Tech Stack
 
@@ -262,6 +264,94 @@ export const SEMANTIC_ICON_STYLES = {
   pageTitle: { size: ICON_SIZES['4xl'], color: ICON_COLORS.primary },  // ← 3xl → 4xl
   // ...
 };
+```
+
+---
+
+## 🌓 Dark Mode
+
+StudyPro podporuje **tmavý režim** s automatickou detekcí systémové preference a manuálním přepínáním.
+
+### Implementace
+
+**Architektura:**
+```
+ThemeContext (localStorage + system preference)
+   ↓
+lightTheme.js / darkTheme.js
+   ↓
+MUI ThemeProvider
+   ↓
+Celá aplikace
+```
+
+**Soubory:**
+- `src/contexts/ThemeContext.jsx` - Context pro správu režimu
+- `src/theme/lightTheme.js` - Světlé téma
+- `src/theme/darkTheme.js` - Tmavé téma
+
+### Funkce
+
+✅ **Auto-detect** - Automatická detekce systémové preference (`prefers-color-scheme`)
+✅ **Persistence** - Uložení preference v `localStorage`
+✅ **Manual toggle** - Přepínač v Settings stránce
+✅ **Real-time switch** - Okamžitá změna bez refreshe
+
+### ThemeContext API
+
+```javascript
+import { useTheme } from '../contexts/ThemeContext';
+
+const { mode, toggleTheme, isDark } = useTheme();
+
+// mode: 'light' | 'dark'
+// toggleTheme: () => void
+// isDark: boolean
+```
+
+### Použití
+
+**V Settings stránce:**
+```jsx
+import { useTheme } from '../contexts/ThemeContext';
+import { Moon, Sun } from 'lucide-react';
+
+const { isDark, toggleTheme } = useTheme();
+
+<Switch checked={isDark} onChange={toggleTheme} />
+{isDark ? <Moon /> : <Sun />}
+```
+
+### Rozdíly mezi tématy
+
+| Vlastnost | Light Theme | Dark Theme |
+|-----------|-------------|------------|
+| Background default | `#f9fafb` | `#0f172a` |
+| Background paper | `#ffffff` | `#1e293b` |
+| Text primary | `#1f2937` | `#f1f5f9` |
+| Text secondary | `#6b7280` | `#94a3b8` |
+| Primary color | `#6366f1` | `#818cf8` (světlejší) |
+| Success color | `#10b981` | `#34d399` (světlejší) |
+
+**Poznámka:** Tmavé téma používá světlejší varianty barev pro lepší kontrast na tmavém pozadí.
+
+### Přizpůsobení
+
+Chceš změnit tmavé pozadí?
+
+```javascript
+// src/theme/darkTheme.js
+
+export const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: '#000000',  // ← Změň zde
+      paper: '#111111',    // ← Změň zde
+    },
+    // ...
+  },
+});
 ```
 
 ---

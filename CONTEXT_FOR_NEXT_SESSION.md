@@ -1,12 +1,52 @@
 # 📋 Context pro další konverzaci - StudyPro
 
-**Datum poslední aktualizace:** 18.11.2025
-**Session:** #4
+**Datum poslední aktualizace:** 19.11.2025
+**Session:** #5
 **Branch:** `claude/studypro-course-module-01SHTjbX99fEcTiZXJYcxkro`
 
 ---
 
-## 🎯 Co bylo dokončeno v této session
+## 🎯 Co bylo dokončeno v této session (#5)
+
+### ✅ Priorita 2 - HIGH (HOTOVO 1/5)
+
+#### 2.5 Dark Mode ✅
+**Commit:** TBD
+
+**Vytvořeno:**
+- `src/contexts/ThemeContext.jsx` - Context pro správu dark/light mode
+- `src/theme/lightTheme.js` - Světlé téma (převedeno z theme.js)
+- `src/theme/darkTheme.js` - Tmavé téma
+- `src/pages/SettingsPage.jsx` - Upgrade s dark mode toggle
+
+**Features:**
+- **Auto-detect system preference** - `prefers-color-scheme` media query
+- **localStorage persistence** - Uložení preference uživatele
+- **Manual toggle** - Switch v Settings stránce s Moon/Sun ikonou
+- **Real-time switching** - Okamžitá změna bez refreshe
+- **Custom dark palette:**
+  - Background: `#0f172a` (tmavě modrošedá)
+  - Paper: `#1e293b`
+  - Text primary: `#f1f5f9`
+  - Světlejší barvy pro lepší kontrast (#818cf8, #34d399...)
+- **Enhanced Settings page:**
+  - 3 Cards: Vzhled, Profil, Účet
+  - Responsive layout se Stack
+  - Barevné zvýraznění bodů a streak
+
+**API:**
+```javascript
+const { mode, toggleTheme, isDark } = useTheme();
+```
+
+**Řádků kódu:** +197
+**Odhadovaná práce:** 2-3 hodiny → SPLNĚNO
+
+---
+
+## 🎯 Co bylo dokončeno v předchozích sessions
+
+### Session #4 - Detail kurzu a Goals CRUD
 
 ### ✅ Priorita 1 - CRITICAL (HOTOVO 2/3)
 
@@ -116,8 +156,8 @@
 
 ## 📊 Aktuální stav projektu
 
-### Dokončeno celkem: 11 úkolů (29.7%)
-### V plánu: 26 úkolů (70.3%)
+### Dokončeno celkem: 15 úkolů (41.7%)
+### V plánu: 21 úkolů (58.3%)
 
 ### Funkcionality
 
@@ -125,12 +165,13 @@
 - Autentizace (Google OAuth)
 - Dashboard s přehledem
 - Správa kurzů (CRUD)
-- **Detail kurzu s lekcemi** (NOVÉ)
-- **CRUD pro Goals** (NOVÉ)
+- Detail kurzu s lekcemi
+- CRUD pro Goals
 - Zobrazení achievements
 - Gamifikace (read-only)
 - Responsive layout
 - Modulární ikony
+- **Dark mode** (NOVÉ v Session #5)
 - Dokumentace
 
 **⬜ TODO - Priorita 1:**
@@ -143,8 +184,7 @@
 - Pokročilé statistiky
 - Study session tracking
 - Notifikace
-- Dark mode
-- Profil a nastavení
+- Profil a nastavení (rozšíření)
 
 ---
 
@@ -170,14 +210,20 @@ studypro/
 │   │   ├── LoginPage.jsx
 │   │   ├── DashboardPage.jsx
 │   │   ├── CoursesPage.jsx
-│   │   ├── CourseDetailPage.jsx ← NOVÉ
+│   │   ├── CourseDetailPage.jsx
 │   │   ├── GoalsPage.jsx (updated)
-│   │   └── StatsPage.jsx
+│   │   ├── StatsPage.jsx
+│   │   └── SettingsPage.jsx (updated) ← Session #5
 │   ├── contexts/
 │   │   ├── AuthContext.jsx
 │   │   ├── CourseContext.jsx
-│   │   └── GamificationContext.jsx
-│   └── App.jsx (updated - nová route)
+│   │   ├── GamificationContext.jsx
+│   │   └── ThemeContext.jsx ← NOVÉ (Session #5)
+│   ├── theme/
+│   │   ├── theme.js (deprecated)
+│   │   ├── lightTheme.js ← NOVÉ (Session #5)
+│   │   └── darkTheme.js ← NOVÉ (Session #5)
+│   └── App.jsx (updated - ThemeProvider)
 │
 ├── shared/
 │   └── src/
@@ -310,10 +356,18 @@ const { courses, createCourse, updateCourse, deleteCourse } = useCourses();
 ```js
 const {
   achievements, userAchievements,
-  goals, createGoal, updateGoal, deleteGoal,  ← NOVÉ
+  goals, createGoal, updateGoal, deleteGoal,
   studySessions, logStudySession,
   addPoints, checkAchievements
 } = useGamification();
+```
+
+### ThemeContext ← NOVÉ (Session #5)
+```js
+const { mode, toggleTheme, isDark } = useTheme();
+// mode: 'light' | 'dark'
+// toggleTheme: () => void
+// isDark: boolean
 ```
 
 ---
@@ -344,10 +398,10 @@ const {
    - Pomodoro technika
    - Automatické body
 
-5. ⬜ **Dark mode** (2-3 hod)
-   - Custom MUI themes
-   - Persistence v localStorage
-   - Auto-detect system preference
+5. ⬜ **Notifikace** (3-4 hod)
+   - Browser notifications
+   - Email reminders
+   - Push notifications
 
 ### Quick Wins
 - [ ] Drag & drop pro priority kurzů (2-3 hod)
@@ -461,10 +515,11 @@ Docs: Update docs
 ## 🎯 Metriky pokroku
 
 ### Code
-- **LOC:** ~9,500 řádků (+1,000 od minula)
-- **Komponenty:** 27 (+2)
-- **Stránky:** 6 (+1)
-- **Kontexty:** 3 (no change)
+- **LOC:** ~9,700 řádků (+200 od minula)
+- **Komponenty:** 27 (no change)
+- **Stránky:** 6 (no change)
+- **Kontexty:** 4 (+1) ← ThemeContext
+- **Themes:** 2 (nové) ← lightTheme, darkTheme
 
 ### Database
 - **Tabulky:** 8
@@ -472,24 +527,24 @@ Docs: Update docs
 - **Používané v app:** 7/8 (chybí jen triggers)
 
 ### Features
-- **Dokončeno:** 11/37 (29.7%)
+- **Dokončeno:** 15/36 (41.7%) ← +4 úkoly (+11.9%)
 - **Priorita 1:** 2/3 (66.7%)
-- **Priorita 2:** 0/6 (0%)
+- **Priorita 2:** 1/5 (20%) ← Dark mode
 
 ---
 
-## 🚀 Sprint #5 - Návrh
+## 🚀 Sprint #6 - Návrh
 
-**Cíl:** Kalendář + Statistiky
-**Story points:** 18
-**Odhadovaná doba:** 10-15 hodin
+**Cíl:** Error handling + Kalendář
+**Story points:** 15
+**Odhadovaná doba:** 8-12 hodin
 
 **Tasks:**
-1. Implementovat CalendarView komponentu
-2. Přidat deadline tracking
-3. Vytvořit StatsPage s grafy
-4. Implementovat time tracking
-5. Export statistik (CSV)
+1. Implementovat Error boundaries
+2. Toast notifications system
+3. Loading skeletony
+4. Retry mechanismus
+5. CalendarView s deadliny
 
 ---
 
