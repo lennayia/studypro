@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
 import { useAuth } from './AuthContext';
+import { checkAndTriggerAchievements } from '../utils/achievementHelper';
 
 const CourseContext = createContext({});
 
@@ -13,12 +14,13 @@ export const useCourses = () => {
 };
 
 export const CourseProvider = ({ children }) => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [courses, setCourses] = useState([]);
   const [lessons, setLessons] = useState({});
   const [materials, setMaterials] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [newAchievements, setNewAchievements] = useState([]); // Store newly unlocked achievements
 
   // Načtení kurzů při přihlášení
   useEffect(() => {
@@ -76,7 +78,16 @@ export const CourseProvider = ({ children }) => {
       if (error) throw error;
 
       setCourses((prev) => [data, ...prev]);
-      return { success: true, data };
+
+      // 🏆 Check for newly unlocked achievements
+      if (user && profile) {
+        const achievements = await checkAndTriggerAchievements(user.id, profile);
+        if (achievements.length > 0) {
+          setNewAchievements(achievements);
+        }
+      }
+
+      return { success: true, data, achievements: newAchievements };
     } catch (error) {
       console.error('Error creating course:', error);
       setError(error.message);
@@ -99,6 +110,15 @@ export const CourseProvider = ({ children }) => {
       if (error) throw error;
 
       setCourses((prev) => prev.map((c) => (c.id === courseId ? data : c)));
+
+      // 🏆 Check for achievements (especially on course completion)
+      if (user && profile && updates.status === 'completed') {
+        const achievements = await checkAndTriggerAchievements(user.id, profile);
+        if (achievements.length > 0) {
+          setNewAchievements(achievements);
+        }
+      }
+
       return { success: true, data };
     } catch (error) {
       console.error('Error updating course:', error);
@@ -272,6 +292,8 @@ export const CourseProvider = ({ children }) => {
     materials,
     loading,
     error,
+    newAchievements, // 🏆 Newly unlocked achievements
+    setNewAchievements, // Clear achievements after showing
     loadCourses,
     createCourse,
     updateCourse,

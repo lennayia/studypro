@@ -3,6 +3,7 @@ import { supabase } from '../utils/supabase';
 import { useAuth } from './AuthContext';
 import { calculatePoints } from '../utils/helpers';
 import useSoundFeedback from '../../shared/src/hooks/useSoundFeedback';
+import { checkAchievements as checkAchievementTriggers, calculateUserStats, ACHIEVEMENT_DEFINITIONS } from '../utils/achievementTriggers';
 
 const GamificationContext = createContext({});
 
@@ -302,6 +303,84 @@ export const GamificationProvider = ({ children }) => {
     }
   };
 
+  // ============================================
+  // AUTO-UNLOCK ACHIEVEMENTS
+  // ============================================
+
+  /**
+   * Check and unlock achievements based on current user stats
+   * Returns array of newly unlocked achievements
+   */
+  const checkAndUnlockAchievements = async (coursesOverride = null) => {
+    try {
+      if (!user || !profile) return [];
+
+      // Fetch current data (or use override from context)
+      const { data: courses } = await supabase
+        .from('studypro_courses')
+        .select('*')
+        .eq('user_id', user.id);
+
+      const { data: sessions } = await supabase
+        .from('studypro_study_sessions')
+        .select('*')
+        .eq('user_id', user.id);
+
+      const { data: goalsData } = await supabase
+        .from('studypro_goals')
+        .select('*')
+        .eq('user_id', user.id);
+
+      // Calculate user stats
+      const stats = calculateUserStats(
+        coursesOverride || courses || [],
+        sessions || [],
+        goalsData || [],
+        profile
+      );
+
+      // Check which achievements should be unlocked
+      const newlyUnlocked = await checkAchievementTriggers(user.id, stats);
+
+      // Unlock each new achievement
+      const unlockedAchievements = [];
+      for (const achievement of newlyUnlocked) {
+        const { data, error } = await supabase
+          .from('studypro_user_achievements')
+          .insert({
+            user_id: user.id,
+            achievement_id: achievement.id,
+            unlocked_at: new Date().toISOString(),
+          })
+          .select()
+          .single();
+
+        if (!error && data) {
+          unlockedAchievements.push({
+            ...achievement,
+            unlocked_at: data.unlocked_at,
+          });
+
+          // Add points for achievement
+          await addPoints('achievement', 25);
+
+          // Play achievement sound
+          playAchievement();
+        }
+      }
+
+      // Reload user achievements
+      if (unlockedAchievements.length > 0) {
+        await loadGamificationData();
+      }
+
+      return unlockedAchievements;
+    } catch (error) {
+      console.error('Error checking achievements:', error);
+      return [];
+    }
+  };
+
   const value = {
     achievements,
     userAchievements,
@@ -311,6 +390,7 @@ export const GamificationProvider = ({ children }) => {
     addPoints,
     unlockAchievement,
     checkAchievements,
+    checkAndUnlockAchievements, // ⭐ NEW: Auto-unlock achievements
     logStudySession,
     createGoal,
     updateGoal,

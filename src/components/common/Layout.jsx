@@ -35,6 +35,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getStreakEmoji, getLevelFromPoints } from '../../utils/helpers';
 import { HelpButton } from './HelpButton';
+import { GlobalSearch } from './GlobalSearch';
+import { KeyboardShortcutsModal } from './KeyboardShortcutsModal';
+import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
 
 const drawerWidth = 260;
 
@@ -47,6 +50,9 @@ export const Layout = ({ children }) => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  // ⌨️ Enable keyboard shortcuts
+  useKeyboardShortcuts();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -228,6 +234,11 @@ export const Layout = ({ children }) => {
             {menuItems.find((item) => item.path === location.pathname)?.text || 'StudyPro'}
           </Typography>
 
+          {/* Global Search */}
+          <GlobalSearch />
+
+          <Box sx={{ width: 16 }} /> {/* Spacer */}
+
           <IconButton onClick={handleProfileMenuOpen}>
             <Avatar src={profile?.avatar_url} sx={{ width: 36, height: 36 }}>
               {profile?.full_name?.[0]}
@@ -315,6 +326,9 @@ export const Layout = ({ children }) => {
 
       {/* Floating Help Button */}
       <HelpButton />
+
+      {/* Keyboard Shortcuts Modal */}
+      <KeyboardShortcutsModal />
     </Box>
   );
 };
